@@ -1,0 +1,99 @@
+@model List<EquipmentAssignment>
+@{
+    ViewData["Title"] = "Equipment";
+    ViewData["Active"] = "Equipment";
+    var inventory = (List<Equipment>)ViewBag.Inventory;
+    var names = (Dictionary<int, string>)ViewBag.EquipmentNames;
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="tx-alert tx-alert-success">@TempData["Success"]</div>
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / <span class="current">Equipment Provisioning</span></div>
+        <h1 class="tx-page-title">Equipment Provisioning</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="AddEquipment">Add Equipment</a>
+        <a class="tx-btn tx-btn-primary" asp-action="AssignEquipment">Assign Equipment</a>
+    </div>
+</div>
+
+<div class="tx-card">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Equipment Inventory</h2>
+    </div>
+    <div class="tx-table-wrap">
+        <table class="tx-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Serial Number</th>
+                    <th>Type</th>
+                    <th>Qty</th>
+                    <th>Location</th>
+                    <th>Purchase Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (inventory.Count == 0)
+                {
+                    <tr><td colspan="7" class="tx-muted">No equipment in inventory yet.</td></tr>
+                }
+                @foreach (var i in inventory)
+                {
+                    <tr>
+                        <td>@i.EquipmentName</td>
+                        <td>@(i.SerialNumber ?? "-")</td>
+                        <td>@(i.EquipmentType ?? "-")</td>
+                        <td>@i.Quantity</td>
+                        <td>@(i.Location ?? "-")</td>
+                        <td>@string.Format("{0:dd MMM yyyy}", i.PurchaseDate)</td>
+                        <td><span class="tx-badge @(i.Status == "Available" ? "tx-badge-active" : i.Status == "In Use" ? "tx-badge-planning" : "tx-badge-inactive")">@(i.Status ?? "Unknown")</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tx-card-foot">@inventory.Count item(s) in inventory</div>
+</div>
+
+<div class="tx-card">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Assigned Equipment</h2>
+    </div>
+    <div class="tx-table-wrap">
+        <table class="tx-table">
+            <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Equipment</th>
+                    <th>Type</th>
+                    <th>MAC Address</th>
+                    <th>Assigned Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="5" class="tx-muted">No equipment assigned yet.</td></tr>
+                }
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>@(e.Connection?.ConnectionNumber ?? e.ConnectionId.ToString())</td>
+                        <td>@(names.TryGetValue(e.EquipmentId, out var n) ? n : "-")</td>
+                        <td>@e.EquipmentType</td>
+                        <td><span class="tx-wo">@e.MacAddress</span></td>
+                        <td>@string.Format("{0:dd MMM yyyy}", e.AssignedDate)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tx-card-foot">Showing @Model.Count assignment(s)</div>
+</div>

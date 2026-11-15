@@ -1,0 +1,59 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register Customer";
+    ViewData["Active"] = "Customers";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Register Customer</h1>
+        <p>Enter the customer's details. He can use the email and password to log in to the customer portal later.</p>
+    </div>
+    <a asp-action="Customers" class="btn btn-outline">Back to customers</a>
+</div>
+
+<div class="card">
+<form asp-action="RegisterCustomer" method="post" class="form-grid" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <div class="form-group">
+        <label asp-for="FullName">Full Name <span class="req">*</span></label>
+        <input asp-for="FullName" type="text" class="form-control" />
+        <span asp-validation-for="FullName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email <span class="req">*</span></label>
+        <input asp-for="Email" type="email" class="form-control" />
+        <span asp-validation-for="Email" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone">Contact Number <span class="req">*</span></label>
+        <input asp-for="Phone" type="tel" class="form-control" placeholder="03XXXXXXXXX" />
+        <span asp-validation-for="Phone" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City">City <span class="req">*</span></label>
+        <input asp-for="City" type="text" class="form-control" list="cityList" />
+        <datalist id="cityList">
+            @foreach (var c in PlanCatalog.Cities)
+            {
+                <option value="@c"></option>
+            }
+        </datalist>
+        <span asp-validation-for="City" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label asp-for="Address">Address <span class="req">*</span></label>
+        <input asp-for="Address" type="text" class="form-control" />
+        <span asp-validation-for="Address" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Password <span class="req">*</span></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="field-error"></span>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Register &amp; continue to order</button>
+        <a asp-action="Customers" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

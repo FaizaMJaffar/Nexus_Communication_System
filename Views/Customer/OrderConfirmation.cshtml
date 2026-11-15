@@ -1,0 +1,38 @@
+@model Order
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="auth-wrap">
+    <div class="card auth-card wide text-center">
+        <div class="success-circle">✔</div>
+        <h2>Order Placed Successfully!</h2>
+        <p class="sub">We have received your connection request.</p>
+        <div class="mb"><span class="order-no">@Model.OrderNumber</span></div>
+
+        <div style="text-align:left;max-width:520px;margin:0 auto">
+            <ul class="detail-list">
+                <li><span class="k">Connection Type</span><span class="v">@Model.ConnectionType</span></li>
+                <li><span class="k">Plan</span><span class="v">@Model.PlanName</span></li>
+                <li><span class="k">Installation Address</span><span class="v">@Model.InstallAddress, @Model.City</span></li>
+                @if (Model.Connection != null)
+                {
+                    <li><span class="k">Account ID</span><span class="v">@Model.Connection.ConnectionNumber</span></li>
+                }
+                <li><span class="k">Monthly Charges</span><span class="v">$@Model.MonthlyCharges.ToString("N0")</span></li>
+                <li><span class="k">Security Deposit (refundable)</span><span class="v">$@Model.SecurityDeposit.ToString("N0")</span></li>
+                <li><span class="k">Service Tax (12.24%)</span><span class="v">$@Model.ServiceTax.ToString("N2")</span></li>
+                <li><span class="k">Payment Method</span><span class="v">@Model.PaymentMethod</span></li>
+                <li><span class="k">Payment Status</span><span class="v"><span class="badge b-@Model.PaymentCss">@Model.PaymentStatus</span></span></li>
+                <li><span class="k">Due Date</span><span class="v">@Model.DueDate.ToString("dd MMM yyyy")</span></li>
+                <li class="total-row"><span>Total Amount</span><span>$@Model.TotalAmount.ToString("N2")</span></li>
+            </ul>
+        </div>
+
+        <div class="btn-group" style="justify-content:center;margin-top:22px">
+            <a class="btn" asp-action="MyBills">💳 Pay Bill</a>
+            <a class="btn btn-outline" asp-action="OrderDetails" asp-route-id="@Model.Id">Order Details</a>
+            <a class="btn btn-outline" asp-action="Dashboard">Dashboard</a>
+        </div>
+    </div>
+</div>

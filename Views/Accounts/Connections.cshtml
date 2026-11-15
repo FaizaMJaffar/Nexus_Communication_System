@@ -1,0 +1,38 @@
+@model List<Connection>
+
+@{
+    ViewData["Title"] = "Connections";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Connections</h1>
+        <p>Use the Id and Customer Id below when generating a bill.</p>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Id</th>
+        <th>Account ID</th>
+        <th>Customer Id</th>
+        <th>Customer</th>
+        <th>Plan</th>
+        <th>Monthly Charges</th>
+        <th>Status</th>
+        <th>Activated Date</th>
+    </tr>
+    @foreach (var c in Model)
+    {
+        <tr>
+            <td>@c.Id</td>
+            <td>@c.ConnectionNumber</td>
+            <td>@c.CustomerId</td>
+            <td>@(c.Customer?.FullName ?? "-")</td>
+            <td>@c.PlanName</td>
+            <td>@c.MonthlyCharges.ToString("N0")</td>
+            <td><span class="badge b-@((c.Status ?? "").ToLower())">@c.Status</span></td>
+            <td>@(c.ActivatedAt.HasValue ? c.ActivatedAt.Value.ToString("dd-MM-yyyy") : "-")</td>
+        </tr>
+    }
+</table>

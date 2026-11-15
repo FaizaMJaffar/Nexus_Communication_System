@@ -1,0 +1,18 @@
+@* Tab strip shared by every Search & Reports page. Each view sets ViewData["Tab"]. *@
+@{
+    var tab = ViewData["Tab"] as string ?? "";
+    string Cls(string name) => tab == name ? "active" : "";
+}
+<div class="nx-tabs">
+    <a class="@Cls("Index")" asp-controller="Search" asp-action="Index">Global Search</a>
+    <a class="@Cls("SearchOrder")" asp-controller="Search" asp-action="SearchOrder">Search Order</a>
+    <a class="@Cls("SearchConnection")" asp-controller="Search" asp-action="SearchConnection">Search Connection</a>
+    <a class="@Cls("AdvancedSearch")" asp-controller="Search" asp-action="AdvancedSearch">Advanced Search</a>
+    <a class="@Cls("OrderStatus")" asp-controller="Search" asp-action="OrderStatus">Order Status</a>
+    <a class="@Cls("ConnectionStatus")" asp-controller="Search" asp-action="ConnectionStatus">Connection Status</a>
+    <a class="@Cls("CustomerReport")" asp-controller="Search" asp-action="CustomerReport">Customer Report</a>
+    <a class="@Cls("OrderReport")" asp-controller="Search" asp-action="OrderReport">Order Report</a>
+    <a class="@Cls("BillingReport")" asp-controller="Search" asp-action="BillingReport">Billing Report</a>
+    <a class="@Cls("PaymentReport")" asp-controller="Search" asp-action="PaymentReport">Payment Report</a>
+    <a class="@Cls("FeedbackReport")" asp-controller="Search" asp-action="FeedbackReport">Feedback Report</a>
+</div>

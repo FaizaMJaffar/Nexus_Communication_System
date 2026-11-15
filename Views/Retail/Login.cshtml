@@ -1,0 +1,35 @@
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Sign In";
+    ViewData["PortalKey"] = "Retail";
+}
+
+<h1>Retail Outlet Sign In</h1>
+<p class="lg-sub">Enter the user ID and password given to you by the Admin to place and track customer orders.</p>
+
+<partial name="_PersonaSwitcher" />
+
+@if (ViewBag.Error != null)
+{
+    <div class="lg-err">@ViewBag.Error</div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="lg-field">
+        <div class="lg-field-top"><label for="username">User ID</label></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">badge</span>
+            <input id="username" name="username" type="text" value="@ViewBag.Username" autocomplete="username" required autofocus />
+        </div>
+    </div>
+    <div class="lg-field">
+        <div class="lg-field-top"><label for="password">Password</label></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">lock</span>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+            <button type="button" class="lg-eye" data-nx-eye="password" tabindex="-1" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+        </div>
+    </div>
+    <label class="lg-check"><input type="checkbox" name="remember" value="true" /> Remember me on this computer</label>
+    <button type="submit" class="lg-submit">Sign In <span class="material-symbols-outlined">arrow_forward</span></button>
+</form>

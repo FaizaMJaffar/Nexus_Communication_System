@@ -1,0 +1,71 @@
+@model Order
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Order @Model.OrderNumber</h1>
+        <p>@Model.OrderDate.ToString("dd MMMM yyyy, hh:mm tt")</p>
+    </div>
+    <div class="btn-group no-print" style="margin:0">
+        <button type="button" class="btn btn-outline" data-print>🖨 Print</button>
+        <a class="btn btn-outline" asp-action="MyOrders">← Back</a>
+    </div>
+</div>
+
+<div class="grid grid-2">
+    <div class="card">
+        <h3>Order Information</h3>
+        <ul class="detail-list">
+            <li><span class="k">Order ID</span><span class="v">@Model.OrderNumber</span></li>
+            <li><span class="k">Order Status</span><span class="v"><span class="badge b-@Model.StatusCss">@Model.Status</span></span></li>
+            <li><span class="k">Payment Status</span><span class="v"><span class="badge b-@Model.PaymentCss">@Model.PaymentStatus</span></span></li>
+            <li><span class="k">Payment Method</span><span class="v">@Model.PaymentMethod</span></li>
+            <li><span class="k">Due Date</span><span class="v">@Model.DueDate.ToString("dd MMM yyyy")</span></li>
+            @if (Model.PaidDate.HasValue)
+            {
+                <li><span class="k">Paid On</span><span class="v">@Model.PaidDate.Value.ToString("dd MMM yyyy")</span></li>
+            }
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Connection Details</h3>
+        <ul class="detail-list">
+            <li><span class="k">Type</span><span class="v">@Model.ConnectionType</span></li>
+            <li><span class="k">Plan</span><span class="v">@Model.PlanName</span></li>
+            <li><span class="k">Address</span><span class="v">@Model.InstallAddress, @Model.City</span></li>
+            @if (Model.Connection != null)
+            {
+                <li><span class="k">Account ID</span><span class="v">@Model.Connection.ConnectionNumber</span></li>
+                <li><span class="k">Connection Status</span><span class="v"><span class="badge b-@Model.Connection.StatusCss">@Model.Connection.Status</span></span></li>
+            }
+            else if (Model.Status == "Rejected")
+            {
+                <li><span class="k">Connection</span><span class="v">Not feasible in your area</span></li>
+            }
+            else
+            {
+                <li><span class="k">Connection</span><span class="v">Awaiting technical team</span></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="card mt">
+    <h3>Charges</h3>
+    <ul class="detail-list">
+        <li><span class="k">Monthly Charges</span><span class="v">$@Model.MonthlyCharges.ToString("N0")</span></li>
+        <li><span class="k">Security Deposit (refundable)</span><span class="v">$@Model.SecurityDeposit.ToString("N0")</span></li>
+                <li><span class="k">Service Tax (12.24%)</span><span class="v">$@Model.ServiceTax.ToString("N2")</span></li>
+        <li class="total-row"><span>Total Amount</span><span>$@Model.TotalAmount.ToString("N2")</span></li>
+    </ul>
+
+    @if (Model.PaymentStatus == "Unpaid")
+    {
+        <form asp-action="PayBill" asp-route-id="@Model.Id" method="post" class="mt no-print">
+            <button type="submit" class="btn btn-success">💳 Pay Now</button>
+        </form>
+    }
+</div>

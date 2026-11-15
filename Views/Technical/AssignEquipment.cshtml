@@ -1,0 +1,55 @@
+@model EquipmentAssignment
+@{
+    ViewData["Title"] = "Assign Equipment";
+    ViewData["Active"] = "Equipment";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Equipment Provisioning / <span class="current">Assign Equipment</span></div>
+        <h1 class="tx-page-title">Assign Equipment</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="Equipment">Back to Equipment</a>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Assignment Details</h2>
+    </div>
+
+    <form asp-action="AssignEquipment" method="post">
+        <div class="tx-card-body">
+
+            <div asp-validation-summary="ModelOnly" class="tx-alert tx-alert-error"></div>
+
+            <div class="tx-form-group">
+                <label asp-for="ConnectionId" class="tx-label">Connection</label>
+                <select asp-for="ConnectionId" class="tx-select" asp-items="@((List<SelectListItem>)ViewBag.Connections)">
+                    <option value="">-- Select connection --</option>
+                </select>
+                <span asp-validation-for="ConnectionId" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="EquipmentId" class="tx-label">Equipment (available only)</label>
+                <select asp-for="EquipmentId" class="tx-select" asp-items="@((List<SelectListItem>)ViewBag.EquipmentList)">
+                    <option value="">-- Select equipment --</option>
+                </select>
+                <span asp-validation-for="EquipmentId" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="MacAddress" class="tx-label">MAC Address</label>
+                <input asp-for="MacAddress" class="tx-input" placeholder="e.g. A4:5E:60:1B:22:9C" />
+                <span asp-validation-for="MacAddress" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-primary">Assign Equipment</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="Equipment">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,90 @@
+@{
+    var act = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    string Act(string k) => act == k ? "active" : "";
+    var uname = User.Identity?.Name ?? "Accounts";
+    var initials = uname.Length >= 2 ? uname.Substring(0, 2).ToUpper() : uname.ToUpper();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Accounts</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/admin/logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/nexus-base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/accounts.css" asp-append-version="true" />
+</head>
+<body class="portal-accounts">
+<header class="nx-topbar">
+    <button type="button" class="nx-menu-btn" id="nxMenuBtn" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+    <a class="nx-brand" asp-controller="Accounts" asp-action="Dashboard"><span class="material-symbols-outlined">hub</span> Nexus Telecom</a>
+    <span class="nx-sub-brand">Accounts &amp; Billing</span>
+    <div class="nx-search">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search this page..." aria-label="Search this page" />
+    </div>
+    <div class="nx-top-right">
+        <span class="nx-env"><i></i> Production</span>
+        <span class="nx-icon-btn" title="Notifications"><span class="material-symbols-outlined">notifications</span></span>
+        <span class="nx-icon-btn" title="Help"><span class="material-symbols-outlined">help</span></span>
+        <div class="nx-user">
+            <div class="nx-user-meta">
+                <div class="nx-user-name">@(User.Identity?.Name ?? "User")</div>
+                <div class="nx-user-role">Accounts Department</div>
+            </div>
+            <span class="nx-avatar">@initials</span>
+            <form asp-controller="Accounts" asp-action="Logout" method="post" class="inline">
+                <button type="submit" class="nx-logout">Logout</button>
+            </form>
+        </div>
+    </div>
+</header>
+<aside class="nx-sidebar" id="nxSidebar">
+    <div class="nx-side-title"><strong>Nexus NOC Suite</strong><span>Billing &amp; Invoicing</span></div>
+    <nav class="nx-nav">
+        <a asp-controller="Accounts" asp-action="Dashboard" class="@Act("Dashboard")"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+        <div class="nx-nav-label">Billing</div>
+        <a asp-controller="Accounts" asp-action="GenerateBill" class="@Act("GenerateBill")"><span class="material-symbols-outlined">receipt_long</span><span>Generate Bill</span></a>
+        <a asp-controller="Accounts" asp-action="CalculateCharges" class="@Act("CalculateCharges")"><span class="material-symbols-outlined">calculate</span><span>Charges</span></a>
+        <a asp-controller="Accounts" asp-action="ApplyDiscount" class="@Act("ApplyDiscount")"><span class="material-symbols-outlined">percent</span><span>Discount</span></a>
+        <a asp-controller="Accounts" asp-action="SecurityDeposit" class="@Act("SecurityDeposit")"><span class="material-symbols-outlined">savings</span><span>Deposit</span></a>
+        <div class="nx-nav-label">Payments</div>
+        <a asp-controller="Accounts" asp-action="AddPayment" class="@Act("AddPayment")"><span class="material-symbols-outlined">add_card</span><span>Add Payment</span></a>
+        <a asp-controller="Accounts" asp-action="Payments" class="@Act("Payments")"><span class="material-symbols-outlined">payments</span><span>Payments</span></a>
+        <a asp-controller="Accounts" asp-action="OrderInvoices" class="@Act("OrderInvoices")"><span class="material-symbols-outlined">request_quote</span><span>Order Invoices</span></a>
+        <a asp-controller="Accounts" asp-action="DuePayments" class="@Act("DuePayments")"><span class="material-symbols-outlined">event_busy</span><span>Due Payments</span></a>
+        <div class="nx-nav-label">Records</div>
+        <a asp-controller="Accounts" asp-action="BillHistory" class="@Act("BillHistory")"><span class="material-symbols-outlined">history</span><span>Bill History</span></a>
+        <a asp-controller="Accounts" asp-action="Connections" class="@Act("Connections")"><span class="material-symbols-outlined">cable</span><span>Connections</span></a>
+        <a asp-controller="Accounts" asp-action="Customers" class="@Act("Customers")"><span class="material-symbols-outlined">group</span><span>Customers</span></a>
+    </nav>
+    <div class="nx-side-bottom">
+        <a asp-controller="Home" asp-action="Index"><span class="material-symbols-outlined">home</span><span>All portals</span></a>
+        <button type="button" id="nxCollapse"><span class="material-symbols-outlined">keyboard_double_arrow_left</span><span class="nx-collapse-label">Collapse view</span></button>
+    </div>
+</aside>
+<div class="nx-backdrop" id="nxBackdrop"></div>
+<div class="nx-main">
+    <div class="nx-crumbs">
+        <a asp-controller="Home" asp-action="Index">Nexus</a><span class="sep">/</span><span>Accounts</span><span class="sep">/</span><b>@ViewData["Title"]</b>
+    </div>
+    <main class="nx-content">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success" data-autohide>@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="nx-footer"><span>&copy; @DateTime.Now.Year Nexus Communication System</span><span>Accounts</span></footer>
+</div>
+<script src="~/js/nexus.js" asp-append-version="true"></script>
+<script src="~/js/accounts.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

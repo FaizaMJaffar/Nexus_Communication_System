@@ -1,0 +1,47 @@
+@model Connection
+@{
+    ViewData["Title"] = "Make Connection Inactive";
+    ViewData["Active"] = "Connections";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Connections & Circuits / <span class="current">Make Inactive</span></div>
+        <h1 class="tx-page-title">Make @Model.ConnectionNumber Inactive</h1>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Choose how long</h2>
+        <span class="tx-badge tx-badge-@Model.StatusCss">@Model.Status</span>
+    </div>
+    <form asp-action="DeactivateConnection" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="tx-card-body">
+            <p class="tx-muted">This takes the connection for WO-@Model.OrderId offline.</p>
+
+            <div class="tx-form-group">
+                <label class="tx-label">Inactive type</label>
+                <label style="display:block; margin-bottom:6px;">
+                    <input type="radio" name="inactiveType" value="Temporary" checked />
+                    Temporarily inactive (can be activated again later)
+                </label>
+                <label style="display:block;">
+                    <input type="radio" name="inactiveType" value="Permanent" />
+                    Permanently inactive (closed for good, cannot be activated again)
+                </label>
+            </div>
+
+            <div class="tx-form-group">
+                <label class="tx-label" for="reason">Reason (optional)</label>
+                <textarea id="reason" name="reason" class="tx-textarea" maxlength="500" placeholder="e.g. Customer request, non-payment"></textarea>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-danger">Make Inactive</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="Connections">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,41 @@
+@model LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Sign In";
+    ViewData["PortalKey"] = "Customer";
+}
+
+<h1>Sign In to Nexus Portal</h1>
+<p class="lg-sub">Enter your enterprise credentials or smart badge ID to access your console.</p>
+
+<partial name="_PersonaSwitcher" />
+
+<form asp-action="Login" method="post" novalidate>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="ModelOnly" class="lg-err"></div>
+
+    <div class="lg-field">
+        <div class="lg-field-top"><label asp-for="Email">Email</label><span class="lg-hint">customer account</span></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">alternate_email</span>
+            <input asp-for="Email" type="email" placeholder="example&#64;email.com" autofocus />
+        </div>
+        <span asp-validation-for="Email" class="lg-fielderr"></span>
+    </div>
+    <div class="lg-field">
+        <div class="lg-field-top"><label asp-for="Password">Password</label><span class="lg-link">Forgot Password / Reset PIN</span></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">lock</span>
+            <input asp-for="Password" />
+            <button type="button" class="lg-eye" data-nx-eye="Password" tabindex="-1" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+        </div>
+        <span asp-validation-for="Password" class="lg-fielderr"></span>
+    </div>
+    <label class="lg-check"><input asp-for="RememberMe" /> Remember Workstation (Tier-1 Device Trust)</label>
+    <button type="submit" class="lg-submit">Authenticate &amp; Access Console <span class="material-symbols-outlined">arrow_forward</span></button>
+</form>
+
+<div class="lg-or">Or verified hardware federation</div>
+<button type="button" class="lg-fed"><span class="lg-ms"><i></i><i></i><i></i><i></i></span> Sign in with Corporate Azure AD</button>
+<button type="button" class="lg-fed"><span class="material-symbols-outlined">usb</span> Hardware Security Key (FIDO2 / YubiKey)</button>
+<p class="lg-back">New customer? <a asp-action="Register">Create an account</a></p>

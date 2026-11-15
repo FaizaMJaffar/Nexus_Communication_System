@@ -1,0 +1,60 @@
+@model List<Employee>
+@{
+    ViewData["Title"] = "Employees";
+    ViewData["Active"] = "Employees";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Employees</h1>
+        <p>Manage staff members of the company.</p>
+    </div>
+    <a asp-action="AddEmployee" class="btn btn-primary">+ Add employee</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Employees" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Search..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="Employees" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>#</th><th>Full Name</th><th>Email</th><th>Phone</th><th>Designation</th><th>User ID</th><th>Role</th><th>Retail Shop</th><th>Salary</th><th>Join Date</th><th>Status</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FullName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Designation</td>
+                    <td>@item.UserId</td>
+                    <td><span class="badge badge-blue">@item.Role</span></td>
+                    <td>@(item.RetailShop?.ShopName ?? "-")</td>
+                    <td>@item.Salary.ToString("N0")</td>
+                    <td>@item.JoinDate.ToString("dd MMM yyyy")</td>
+                    <td><span class="badge @(item.IsActive ? "badge-green" : "badge-red")">@(item.IsActive ? "Active" : "Inactive")</span></td>
+                    <td class="actions">
+                        <a asp-action="EditEmployee" asp-route-id="@item.Id" class="btn btn-sm btn-outline">Edit</a>
+                        <form asp-action="DeleteEmployee" asp-route-id="@item.Id" method="post" class="inline" data-confirm="Delete this employee? This cannot be undone.">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="12" class="empty">Nothing here yet. Use the add button to create a record.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

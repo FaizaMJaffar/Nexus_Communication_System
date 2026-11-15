@@ -1,0 +1,48 @@
+@model List<Order>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="page-header">
+    <div>
+        <h1>My Orders</h1>
+        <p>Your complete order history</p>
+    </div>
+    <a class="btn" asp-action="ApplyConnection">+ New Order</a>
+</div>
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="empty">
+            <span class="big">📭</span>
+            You have no orders yet.
+            <div class="mt"><a class="btn btn-sm" asp-action="ApplyConnection">Apply for a connection</a></div>
+        </div>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Order ID</th><th>Connection</th><th>Plan</th><th>Total</th><th>Date</th><th>Payment</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td><strong>@o.OrderNumber</strong></td>
+                            <td>@o.ConnectionType</td>
+                            <td>@o.PlanName</td>
+                            <td>$@o.TotalAmount.ToString("N2")</td>
+                            <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge b-@o.PaymentCss">@o.PaymentStatus</span></td>
+                            <td><span class="badge b-@o.StatusCss">@o.Status</span></td>
+                            <td><a class="btn btn-outline btn-sm" asp-action="OrderDetails" asp-route-id="@o.Id">Details</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

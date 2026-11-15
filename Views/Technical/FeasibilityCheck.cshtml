@@ -1,0 +1,108 @@
+@model Feasibility
+@{
+    ViewData["Title"] = "Feasibility Check";
+    ViewData["Active"] = "Feasibility";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / <span class="current">Feasibility Checks</span></div>
+        <h1 class="tx-page-title">Feasibility Check</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="Orders">Back to Work Orders</a>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Availability Checks</h2>
+    </div>
+
+    <form asp-action="FeasibilityCheck" method="post">
+        <div class="tx-card-body">
+
+            <div asp-validation-summary="ModelOnly" class="tx-alert tx-alert-error"></div>
+
+            <div class="tx-form-group">
+                <label asp-for="OrderId" class="tx-label">Work Order</label>
+                <select asp-for="OrderId" class="tx-select" asp-items="@((List<SelectListItem>)ViewBag.Orders)">
+                    <option value="">-- Select work order --</option>
+                </select>
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+            </div>
+
+            <div id="fx-info" class="tx-alert" style="display:none;"></div>
+
+            <div class="tx-form-group" id="fx-landline" style="display:none;">
+                <label class="tx-label">Landline available at the address?</label>
+                <select name="LandlineAvailable" class="tx-select">
+                    <option value="">-- Select --</option>
+                    <option value="true" selected="@(Model.LandlineAvailable == true)">Yes, available</option>
+                    <option value="false" selected="@(Model.LandlineAvailable == false)">No, not available</option>
+                </select>
+                <span asp-validation-for="LandlineAvailable" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group" id="fx-internet" style="display:none;">
+                <label class="tx-label">Internet available at the address?</label>
+                <select name="InternetAvailable" class="tx-select">
+                    <option value="">-- Select --</option>
+                    <option value="true" selected="@(Model.InternetAvailable == true)">Yes, available</option>
+                    <option value="false" selected="@(Model.InternetAvailable == false)">No, not available</option>
+                </select>
+                <span asp-validation-for="InternetAvailable" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label class="tx-label">Server available (free capacity)?</label>
+                <select name="ServerAvailable" class="tx-select">
+                    <option value="true" selected="@Model.ServerAvailable">Yes, available</option>
+                    <option value="false" selected="@(!Model.ServerAvailable)">No, not available</option>
+                </select>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="Remarks" class="tx-label">Remarks</label>
+                <textarea asp-for="Remarks" class="tx-textarea" placeholder="Survey notes (optional)"></textarea>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" name="decision" value="Decide" class="tx-btn tx-btn-primary">Save Result</button>
+                <button type="submit" name="decision" value="Pending" class="tx-btn tx-btn-secondary">Save as Pending</button>
+            </div>
+            <p class="tx-muted">The result (Feasible or Rejected) is worked out from the answers above.</p>
+        </div>
+    </form>
+</div>
+
+<script>
+        (function () {
+            var orderSel = document.getElementById("OrderId");
+            if (!orderSel) return;
+            var info = document.getElementById("fx-info");
+            var landline = document.getElementById("fx-landline");
+            var internet = document.getElementById("fx-internet");
+
+            function load() {
+                landline.style.display = internet.style.display = info.style.display = "none";
+                if (!orderSel.value) return;
+                fetch('@Url.Action("FeasibilityInfo")?orderId=' + encodeURIComponent(orderSel.value))
+                    .then(function (r) { return r.json(); })
+                    .then(function (d) {
+                        landline.style.display = d.needLandline ? "" : "none";
+                        internet.style.display = d.needInternet ? "" : "none";
+                        var msg = d.connectionType + " order.";
+                        if (d.connectionType === "Dial-Up")
+                            msg += d.hasExistingLandline
+                                ? " Customer already has our landline, so only internet is checked."
+                                : " Landline and internet must both be checked.";
+                        info.textContent = msg + " Server availability is always checked.";
+                        info.style.display = "";
+                    });
+            }
+            orderSel.addEventListener("change", load);
+            load();
+        })();
+    </script>

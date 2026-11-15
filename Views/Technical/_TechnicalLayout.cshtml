@@ -1,0 +1,89 @@
+@{
+    string active = ViewData["Active"]?.ToString() ?? "";
+    string staffName = ViewData["StaffName"]?.ToString() ?? "Technical Staff";
+    string staffRole = ViewData["StaffRole"]?.ToString() ?? "Technical Department";
+    string queueCount = ViewData["QueueCount"]?.ToString() ?? "0";
+
+    string initials = staffName.Length >= 2 ? staffName.Substring(0, 2).ToUpper() : staffName.ToUpper();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Technical</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/technical.css" />
+</head>
+<body class="tx-body">
+
+    <!-- Top bar -->
+    <header class="tx-topbar">
+        <div class="tx-topbar-left">
+            <a class="tx-brand" asp-controller="Technical" asp-action="Dashboard">
+                <span class="material-symbols-outlined">hub</span>
+                Nexus Telecom
+            </a>
+            <div class="tx-search">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" placeholder="Search work order, customer..." />
+            </div>
+        </div>
+
+        <div class="tx-topbar-right">
+            <div class="tx-queue-pill">Queue: <b>@queueCount pending</b></div>
+            <div class="tx-env-badge">Production</div>
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="material-symbols-outlined">help</span>
+            <div class="tx-user">
+                <div class="tx-user-meta">
+                    <div class="tx-user-name">@staffName</div>
+                    <div class="tx-user-role">@staffRole</div>
+                </div>
+                <div class="tx-avatar">@initials</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="tx-sidebar">
+        <div>
+            <div class="tx-side-title">
+                <strong>Nexus Technical</strong>
+                <span>Field Operations Portal</span>
+            </div>
+            <nav class="tx-nav">
+                <a class="@(active == "Dashboard" ? "active" : "")" asp-controller="Technical" asp-action="Dashboard">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+                <a class="@(active == "Orders" ? "active" : "")" asp-controller="Technical" asp-action="Orders">
+                    <span class="material-symbols-outlined">assignment</span> Work Orders Queue
+                </a>
+                <a class="@(active == "Feasibility" ? "active" : "")" asp-controller="Technical" asp-action="FeasibilityCheck">
+                    <span class="material-symbols-outlined">fact_check</span> Feasibility Checks
+                </a>
+                <a class="@(active == "Connections" ? "active" : "")" asp-controller="Technical" asp-action="Connections">
+                    <span class="material-symbols-outlined">cable</span> Connections &amp; Circuits
+                </a>
+                <a class="@(active == "Equipment" ? "active" : "")" asp-controller="Technical" asp-action="Equipment">
+                    <span class="material-symbols-outlined">router</span> Equipment Provisioning
+                </a>
+            </nav>
+        </div>
+
+        <div class="tx-side-bottom">
+            <a asp-controller="Technical" asp-action="Logout">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="tx-main">
+        @RenderBody()
+    </main>
+
+    <script src="~/js/technical.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+@model SelectPlanViewModel
+@{
+    ViewData["Title"] = "Select Plan";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Select Your Plan</h1>
+        <p>Step 2 of 2 - @PlanCatalog.Icons[Model.ConnectionType] @Model.ConnectionType &middot; @Model.InstallAddress, @Model.City</p>
+    </div>
+    <a class="btn btn-outline btn-sm" asp-action="ApplyConnection" asp-route-type="@Model.ConnectionType">← Back</a>
+</div>
+
+<form asp-action="SelectPlan" method="post" novalidate>
+    <input type="hidden" asp-for="ConnectionType" />
+    <input type="hidden" asp-for="InstallAddress" />
+    <input type="hidden" asp-for="City" />
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["PlanId"]?.Errors.Count > 0)
+    {
+        <div class="alert alert-danger">@ViewData.ModelState["PlanId"].Errors[0].ErrorMessage</div>
+    }
+
+    @if (!Model.Plans.Any())
+    {
+        <div class="alert alert-danger">No plans are available for this connection type right now. Please try another type.</div>
+    }
+
+    <div class="grid grid-3 mb">
+        @foreach (var p in Model.Plans)
+        {
+            <label class="choice">
+                <input type="radio" name="PlanId" value="@p.Id" data-price="@p.Price" data-name="@p.PlanName" @(Model.PlanId == p.Id ? "checked" : "") />
+                <div class="choice-box">
+                    <span class="plan-speed">@p.Speed</span>
+                    <div class="choice-title" style="margin-top:10px">@p.PlanName</div>
+                    <div class="plan-price">$@p.Price.ToString("N0") <small>/ month</small></div>
+                    <ul class="plan-features">
+                        @foreach (var f in (p.Description ?? "").Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        {
+                            <li>@f</li>
+                        }
+                    </ul>
+                </div>
+            </label>
+        }
+    </div>
+
+    <div class="grid grid-2">
+        <div class="card">
+            <h3>Payment Method</h3>
+            <div class="form-group">
+                <label asp-for="PaymentMethod"></label>
+                <select asp-for="PaymentMethod">
+                    @foreach (var m in PlanCatalog.PaymentMethods)
+                    {
+                        <option value="@m">@m</option>
+                    }
+                </select>
+            </div>
+            <p class="muted" style="font-size:13px">You can also pay later from "My Bills". Your connection is created and activated by our technical team once your area is found feasible.</p>
+        </div>
+
+        <div class="card" id="planSummary" data-fee="@PlanCatalog.DepositFor(Model.ConnectionType)" data-tax="@BillingRules.ServiceTaxPercent">
+            <h3>Order Summary</h3>
+            <ul class="detail-list">
+                <li><span class="k">Selected Plan</span><span class="v" id="sumPlan">-</span></li>
+                <li><span class="k">Monthly Charges</span><span class="v" id="sumMonthly">$0</span></li>
+                <li><span class="k">Security Deposit (refundable)</span><span class="v">$@PlanCatalog.DepositFor(Model.ConnectionType).ToString("N0")</span></li>
+                <li><span class="k">Service tax (@BillingRules.ServiceTaxPercent%)</span><span class="v" id="sumTax">$0.00</span></li>
+                <li class="total-row"><span>Total (first bill)</span><span id="sumTotal">$0</span></li>
+            </ul>
+            <button type="submit" class="btn btn-block mt">✔ Confirm Order</button>
+        </div>
+    </div>
+</form>

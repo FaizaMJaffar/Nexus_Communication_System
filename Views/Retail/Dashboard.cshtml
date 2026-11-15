@@ -1,0 +1,75 @@
+@model List<Order>
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Active"] = "Dashboard";
+    string Badge(string s) => s switch
+    {
+        "Completed" or "Feasible" or "Paid" => "badge-green",
+        "Rejected" => "badge-red",
+        "Processing" or "Pending" or "Unpaid" => "badge-blue",
+        _ => "badge-purple"
+    };
+}
+
+<div class="page-head">
+    <div>
+        <h1>Order Desk</h1>
+        <p>Welcome, @User.Identity?.Name. Register customers, place orders and track them here.</p>
+    </div>
+    <div class="actions">
+        <a asp-action="RegisterCustomer" class="btn btn-outline"><span class="material-symbols-outlined">person_add</span> Register customer</a>
+        <a asp-action="Customers" class="btn btn-primary"><span class="material-symbols-outlined">add_shopping_cart</span> Place new order</a>
+    </div>
+</div>
+
+<div class="nx-kpis">
+    <a class="nx-kpi" asp-action="Orders">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Orders placed</span><span class="nx-kpi-ico"><span class="material-symbols-outlined">assignment</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.TotalOrders</div>
+        <div class="nx-kpi-note"><span class="dot blue"></span> By your outlet</div>
+    </a>
+    <a class="nx-kpi" asp-action="Orders" asp-route-status="Processing">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">In progress</span><span class="nx-kpi-ico cyan"><span class="material-symbols-outlined">pending_actions</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.InProgress</div>
+        <div class="nx-kpi-note"><span class="dot"></span> Waiting for technical team</div>
+    </a>
+    <a class="nx-kpi" asp-action="Connections">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Active connections</span><span class="nx-kpi-ico green"><span class="material-symbols-outlined">cable</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.ActiveConnections</div>
+        <div class="nx-kpi-note"><span class="dot"></span> Account IDs issued</div>
+    </a>
+    <a class="nx-kpi" asp-action="Orders" asp-route-status="Rejected">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Rejected</span><span class="nx-kpi-ico purple"><span class="material-symbols-outlined">block</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.Rejected</div>
+        <div class="nx-kpi-note"><span class="dot purple"></span> Not feasible</div>
+    </a>
+</div>
+
+<div class="card">
+    <h3>Recent orders</h3>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>Feasibility</th><th>Order status</th><th>Date</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var o in Model)
+            {
+                var feas = o.Feasibilities?.OrderByDescending(f => f.FeasibilityId).FirstOrDefault()?.Status ?? "Pending";
+                <tr>
+                    <td>@o.OrderNumber</td>
+                    <td>@(o.Customer?.FullName ?? "-")</td>
+                    <td>@o.ConnectionType</td>
+                    <td>@o.PlanName</td>
+                    <td><span class="badge @Badge(feas)">@feas</span></td>
+                    <td><span class="badge @Badge(o.Status)">@o.Status</span></td>
+                    <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                    <td class="actions"><a asp-action="OrderDetails" asp-route-id="@o.Id" class="btn btn-sm btn-outline">View</a></td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="empty">No orders yet. Choose a customer and place the first order.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

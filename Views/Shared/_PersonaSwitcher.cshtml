@@ -1,0 +1,11 @@
+@{
+    string current = ViewData["PortalKey"] as string ?? "";
+}
+<div class="lg-dom-label">Target Operational Domain</div>
+<div class="lg-tabs">
+    <a class="@(current == "Admin" ? "current" : "")" asp-controller="Admin" asp-action="Login"><span class="material-symbols-outlined">shield_person</span>NOC Admin</a>
+    <a class="@(current == "Technical" ? "current" : "")" asp-controller="Technical" asp-action="Login"><span class="material-symbols-outlined">engineering</span>Field Tech Ops</a>
+    <a class="@(current == "Customer" ? "current" : "")" asp-controller="Customer" asp-action="Login"><span class="material-symbols-outlined">support_agent</span>Customer Care</a>
+    <a class="@(current == "Accounts" ? "current" : "")" asp-controller="Accounts" asp-action="Login"><span class="material-symbols-outlined">account_balance_wallet</span>Billing ERP</a>
+    <a class="@(current == "Retail" ? "current" : "")" asp-controller="Retail" asp-action="Login"><span class="material-symbols-outlined">storefront</span>Retail Outlet</a>
+</div>

@@ -1,0 +1,123 @@
+@model WorkOrderDetails
+@{
+    ViewData["Title"] = "Order Details";
+    ViewData["Active"] = "Orders";
+    var o = Model.Order;
+    var f = Model.Feasibility;
+    string fStatus = f?.Status ?? "Pending";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="tx-alert tx-alert-success">@TempData["Success"]</div>
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Work Orders Queue / <span class="current">WO-@o.Id</span></div>
+        <h1 class="tx-page-title">Work Order WO-@o.Id</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="Orders">Back to Work Orders</a>
+    </div>
+</div>
+
+<div class="tx-grid-2">
+    <div class="tx-card">
+        <div class="tx-card-head">
+            <h2 class="tx-card-title">Customer Order</h2>
+            <span class="tx-badge tx-badge-@o.StatusCss">@o.Status</span>
+        </div>
+        <div class="tx-card-body">
+            <table class="tx-table">
+                <tbody>
+                    <tr><th>Order ID</th><td><span class="tx-wo">@o.OrderNumber</span></td></tr>
+                    <tr><th>Customer</th><td>@(o.Customer?.FullName ?? "-") (ID @o.CustomerId)</td></tr>
+                    <tr><th>Phone</th><td>@(o.Customer?.Phone ?? "-")</td></tr>
+                    <tr><th>Connection / Plan</th><td>@o.ConnectionType - @o.PlanName @(string.IsNullOrEmpty(o.Speed) ? "" : "(" + o.Speed + ")")</td></tr>
+                    <tr><th>Install Address</th><td>@o.InstallAddress, @o.City</td></tr>
+                    <tr><th>Order Date</th><td>@o.OrderDate.ToString("dd MMM yyyy")</td></tr>
+                    <tr><th>Connection</th><td>@(o.Connection == null ? "Not created yet" : o.Connection.ConnectionNumber)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tx-card">
+        <div class="tx-card-head">
+            <h2 class="tx-card-title">Feasibility Summary</h2>
+            <span class="tx-badge tx-badge-@fStatus.ToLower()">@fStatus</span>
+        </div>
+        <div class="tx-card-body">
+            @if (f == null)
+            {
+                <p class="tx-muted">No site survey has been recorded for this order yet.</p>
+            }
+            else
+            {
+                <table class="tx-table">
+                    <tbody>
+                        @if (f.HasExistingLandline)
+                        {
+                            <tr><th>Existing Landline</th><td>Customer already has our landline</td></tr>
+                        }
+                        @if (f.LandlineAvailable != null)
+                        {
+                            <tr><th>Landline Available</th><td>@(f.LandlineAvailable == true ? "Yes" : "No")</td></tr>
+                        }
+                        @if (f.InternetAvailable != null)
+                        {
+                            <tr><th>Internet Available</th><td>@(f.InternetAvailable == true ? "Yes" : "No")</td></tr>
+                        }
+                        <tr><th>Server Available</th><td>@(f.ServerAvailable ? "Yes" : "No")</td></tr>
+                        <tr><th>Checked By</th><td>@(f.CheckedBy ?? "-")</td></tr>
+                        <tr><th>Checked Date</th><td>@f.CheckedDate.ToString("dd MMM yyyy")</td></tr>
+                        <tr><th>Remarks</th><td>@(string.IsNullOrWhiteSpace(f.Remarks) ? "-" : f.Remarks)</td></tr>
+                    </tbody>
+                </table>
+            }
+
+            <div class="tx-form-actions">
+                @if (f == null)
+                {
+                    <a class="tx-btn tx-btn-primary" asp-action="FeasibilityCheck" asp-route-orderId="@o.Id">Start Feasibility Check</a>
+                }
+                else
+                {
+                    <a class="tx-btn tx-btn-secondary" asp-action="UpdateOrderStatus" asp-route-id="@f.FeasibilityId">Update Status</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tx-card">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Next Actions</h2>
+    </div>
+    <div class="tx-card-body">
+        @if (o.Connection != null)
+        {
+            <p class="tx-muted">Connection @o.Connection.ConnectionNumber exists for this order. Assign equipment or activate it from the connections page.</p>
+            <div class="tx-form-actions">
+                <a class="tx-btn tx-btn-primary" asp-action="AssignEquipment" asp-route-connectionId="@o.Connection.Id">Assign Equipment</a>
+                <a class="tx-btn tx-btn-secondary" asp-action="Connections">Go to Connections</a>
+            </div>
+        }
+        else if (fStatus == "Feasible")
+        {
+            <p class="tx-muted">This order is feasible. Next: create the connection, then assign equipment.</p>
+            <div class="tx-form-actions">
+                <a class="tx-btn tx-btn-primary" asp-action="CreateConnection" asp-route-orderId="@o.Id">Create Connection</a>
+            </div>
+        }
+        else if (fStatus == "Rejected")
+        {
+            <p class="tx-muted">This order was rejected. A new site survey is required before it can proceed.</p>
+        }
+        else
+        {
+            <p class="tx-muted">Survey is still pending. Update the status once the check is done.</p>
+        }
+    </div>
+</div>

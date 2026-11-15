@@ -1,0 +1,71 @@
+@model NexusCommunicationSystem.Models.OrderReportViewModel
+@{
+    ViewData["Title"] = "Order Report";
+    ViewData["Active"] = "Reports";
+    ViewData["Tab"] = "OrderReport";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Order Report</h1>
+        <p>Orders in a period with totals per status.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="OrderReport" class="nx-filter" data-search data-clean="true">
+        <div class="form-group"><label for="fromDate">From date</label><input type="date" id="fromDate" name="fromDate" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group"><label for="toDate">To date</label><input type="date" id="toDate" name="toDate" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group"><label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="">All</option>
+                @foreach (var s in new[] { "Processing", "Completed", "Rejected" }) { <option value="@s" selected="@(Model.Status == s)">@s</option> }
+            </select></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">filter_alt</span> Generate</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+<div class="nx-kpis">
+    <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">Orders</span></div><div class="nx-kpi-value">@Model.Orders.Count</div></div>
+    <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">Total amount</span></div><div class="nx-kpi-value"><small>$</small> @Model.TotalAmount.ToString("N0")</div></div>
+    @foreach (var sc in Model.StatusSummary)
+    {
+        <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">@sc.Status</span><span class="badge b-@((sc.Status ?? "").ToLower())">@sc.Status</span></div><div class="nx-kpi-value">@sc.Count</div></div>
+    }
+</div>
+
+<div class="card">
+<div class="toolbar">
+    <input type="text" id="quickFilter" class="form-control" style="max-width:300px" placeholder="Quick filter this table..." />
+    <div class="actions no-print">
+        <a href="#" data-action="export-csv" data-filename="order-report" class="btn btn-outline btn-sm"><span class="material-symbols-outlined">download</span> Export CSV</a>
+        <a href="#" data-action="print" class="btn btn-outline btn-sm"><span class="material-symbols-outlined">print</span> Print</a>
+    </div>
+</div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th><th style="text-align:right">Amount ($)</th></tr></thead>
+        <tbody>
+        @foreach (var o in Model.Orders)
+        {
+            <tr>
+                <td><a asp-action="OrderStatus" asp-route-orderNumber="@o.OrderNumber" class="mono">@o.OrderNumber</a></td>
+                <td>@o.Customer?.FullName</td>
+                <td>@o.ConnectionType - @o.PlanName</td>
+                <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                <td><span class="badge b-@((o.Status ?? "").ToLower())">@o.Status</span></td>
+                <td style="text-align:right">@o.TotalAmount.ToString("N0")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+    @if (!Model.Orders.Any()) { <div class="empty">No orders in this period.</div> }
+</div>
+
+<script src="~/js/search.js" asp-append-version="true"></script>

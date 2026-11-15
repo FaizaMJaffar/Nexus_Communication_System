@@ -1,0 +1,78 @@
+@model RetailSelectPlanViewModel
+@{
+    ViewData["Title"] = "New Order";
+    ViewData["Active"] = "Customers";
+    var deposit = PlanCatalog.DepositFor(Model.ConnectionType);
+}
+
+<div class="page-head">
+    <div>
+        <h1>New Order - Step 2 of 2</h1>
+        <p>@Model.Customer?.FullName &middot; @Model.ConnectionType &middot; @Model.InstallAddress, @Model.City</p>
+    </div>
+    <a asp-action="NewOrder" asp-route-customerId="@Model.CustomerId" asp-route-type="@Model.ConnectionType" class="btn btn-outline">Back</a>
+</div>
+
+<form asp-action="SelectPlan" method="post" novalidate>
+    <input type="hidden" asp-for="CustomerId" />
+    <input type="hidden" asp-for="ConnectionType" />
+    <input type="hidden" asp-for="InstallAddress" />
+    <input type="hidden" asp-for="City" />
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["PlanId"]?.Errors.Count > 0)
+    {
+        <div class="alert alert-danger">@ViewData.ModelState["PlanId"].Errors[0].ErrorMessage</div>
+    }
+    @if (!Model.Plans.Any())
+    {
+        <div class="alert alert-danger">No active plan is available for this connection type. Ask the Admin to add or activate a plan.</div>
+    }
+
+    <div class="card">
+        <h3>Choose a plan</h3>
+        <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th></th><th>Plan</th><th>Speed / Allowance</th><th>Details</th><th>Price</th><th>First invoice</th></tr></thead>
+                <tbody>
+                @foreach (var p in Model.Plans)
+                {
+                    var firstInvoice = BillingRules.Round((p.Price + deposit) * (1m + BillingRules.ServiceTaxPercent / 100m));
+                    <tr>
+                        <td><input type="radio" name="PlanId" value="@p.Id" @(Model.PlanId == p.Id ? "checked" : "") /></td>
+                        <td>@p.PlanName</td>
+                        <td>@p.Speed</td>
+                        <td>@string.Join(" / ", (p.Description ?? "").Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))</td>
+                        <td>$@p.Price.ToString("N2")</td>
+                        <td>$@firstInvoice.ToString("N2")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="PaymentMethod">Payment Method</label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    @foreach (var m in PlanCatalog.PaymentMethods)
+                    {
+                        <option value="@m">@m</option>
+                    }
+                </select>
+                <span asp-validation-for="PaymentMethod" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label>Refundable security deposit</label>
+                <input type="text" class="form-control" value="$@deposit.ToString("N2")" readonly />
+            </div>
+            <div class="form-actions form-full">
+                <button type="submit" class="btn btn-primary">Place order</button>
+                <a asp-action="Customers" class="btn btn-outline">Cancel</a>
+            </div>
+        </div>
+        <p class="muted">The first invoice is the plan price plus the refundable security deposit plus @BillingRules.ServiceTaxPercent% service tax. The Technical team does the feasibility check and creates the connection.</p>
+    </div>
+</form>

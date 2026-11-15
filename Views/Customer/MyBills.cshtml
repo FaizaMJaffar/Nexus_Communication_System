@@ -1,0 +1,103 @@
+@model List<Order>
+@{
+    ViewData["Title"] = "My Bills";
+    decimal unpaid = ViewBag.TotalUnpaid;
+    decimal paid = ViewBag.TotalPaid;
+}
+
+<div class="page-header">
+    <div>
+        <h1>My Bills</h1>
+        <p>View and pay your bills</p>
+    </div>
+</div>
+
+<div class="grid grid-2 mb">
+    <div class="card stat">
+        <div class="stat-icon">⏳</div>
+        <div><div class="stat-value">$@unpaid.ToString("N0")</div><div class="stat-label">Unpaid Amount</div></div>
+    </div>
+    <div class="card stat">
+        <div class="stat-icon">✅</div>
+        <div><div class="stat-value">$@paid.ToString("N0")</div><div class="stat-label">Total Paid</div></div>
+    </div>
+</div>
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="empty">
+            <span class="big">🧾</span>
+            You have no bills yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Bill #</th><th>Description</th><th>Amount</th><th>Due Date</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr>
+                            <td><strong>@b.OrderNumber</strong></td>
+                            <td>@b.ConnectionType - @b.PlanName</td>
+                            <td>$@b.TotalAmount.ToString("N0")</td>
+                            <td>@b.DueDate.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge b-@b.PaymentCss">@b.PaymentStatus</span></td>
+                            <td>
+                                @if (b.PaymentStatus == "Unpaid")
+                                {
+                                    <form asp-action="PayBill" asp-route-id="@b.Id" method="post" style="display:inline">
+                                        <button type="submit" class="btn btn-success btn-sm" data-confirm="Do you want to pay this bill now?">Pay Now</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline btn-sm" asp-action="OrderDetails" asp-route-id="@b.Id">Receipt</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@{
+    var accountBills = ViewBag.AccountBills as List<Bill>;
+}
+@if (accountBills != null && accountBills.Any())
+{
+    <div class="card mt">
+        <h3>Monthly Bills (from Accounts)</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Bill #</th><th>Connection</th><th>Month</th><th>Due Date</th><th>Total</th><th>Paid</th><th>Due</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in accountBills)
+                    {
+                        var paidSoFar = b.Payments.Sum(x => x.AmountPaid);
+                        var due = b.TotalAmount - paidSoFar;
+                        <tr>
+                            <td>@b.BillId</td>
+                            <td>@(b.Connection?.ConnectionNumber ?? "-")</td>
+                            <td>@b.BillingMonth</td>
+                            <td>@b.DueDate.ToString("dd MMM yyyy")</td>
+                            <td>$@b.TotalAmount.ToString("N0")</td>
+                            <td>$@paidSoFar.ToString("N0")</td>
+                            <td>$@((due < 0 ? 0 : due).ToString("N0"))</td>
+                            <td><span class="badge b-@b.Status.ToLower()">@b.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="muted mt">Payments for monthly bills are recorded by the Accounts department or at a retail shop.</p>
+    </div>
+}

@@ -1,0 +1,368 @@
+@model List<Plan>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus Telecom | Dial-Up, Broadband &amp; Landline</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Typography Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@@400;500;600;700&amp;family=JetBrains+Mono:wght@@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Verbatim Tailwind Config Theme -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#bac7e1",
+            "secondary-fixed": "#dae1ff",
+            "surface-container-low": "#f0f3ff",
+            "on-primary-container": "#77849c",
+            "surface-container": "#e7eeff",
+            "on-background": "#111c2d",
+            "tertiary-fixed": "#b3ebff",
+            "outline-variant": "#c5c6cd",
+            "on-error": "#ffffff",
+            "inverse-surface": "#263143",
+            "secondary-fixed-dim": "#b3c5ff",
+            "on-tertiary-container": "#0090ad",
+            "tertiary-container": "#001f27",
+            "error": "#ba1a1a",
+            "surface": "#f9f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-variant": "#d8e3fb",
+            "on-secondary-container": "#f9f7ff",
+            "tertiary-fixed-dim": "#4cd6fb",
+            "on-secondary-fixed-variant": "#003fa4",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#ecf1ff",
+            "on-primary-fixed-variant": "#3a475c",
+            "tertiary": "#000000",
+            "on-surface-variant": "#44474c",
+            "surface-dim": "#cfdaf2",
+            "on-secondary": "#ffffff",
+            "surface-container-highest": "#d8e3fb",
+            "primary": "#000000",
+            "on-tertiary": "#ffffff",
+            "surface-tint": "#525f75",
+            "primary-fixed": "#d6e3fe",
+            "on-tertiary-fixed-variant": "#004e5f",
+            "primary-container": "#0e1c2f",
+            "surface-container-high": "#dee8ff",
+            "on-surface": "#111c2d",
+            "secondary": "#0050cc",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#001f27",
+            "on-secondary-fixed": "#001849",
+            "surface-bright": "#f9f9ff",
+            "background": "#f9f9ff",
+            "outline": "#75777d",
+            "secondary-container": "#0266ff",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#bac7e1",
+            "on-primary-fixed": "#0e1c2f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-lg": "1rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "margin": "1.5rem"
+          },
+          "fontFamily": {
+            "code-sm": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "data-tabular": ["Inter"],
+            "headline-md": ["Inter"],
+            "title-sm": ["Inter"],
+            "label-sm": ["Inter"]
+          },
+          "fontSize": {
+            "code-sm": ["0.75rem", { "lineHeight": "1rem", "fontWeight": "400" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1rem", "fontWeight": "400" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "400" }],
+            "label-md": ["0.8125rem", { "lineHeight": "1.125rem", "fontWeight": "500" }],
+            "headline-xl": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-lg": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "data-tabular": ["0.8125rem", { "lineHeight": "1.125rem", "fontWeight": "500" }],
+            "headline-md": ["1.125rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-sm": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- ================= TOP NAVBAR (JSON Anchor Executed) ================= -->
+<header class="bg-primary-container text-secondary-fixed w-full h-12 px-space-lg flex items-center justify-between z-50 sticky top-0 shadow-sm border-b border-outline-variant">
+<!-- Left: Brand Logo & Operational Status -->
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-2 text-headline-md font-headline-md text-on-primary font-bold tracking-tight" href="/">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="hub">hub</span>
+<span>Nexus Telecom</span>
+</a>
+</div>
+<!-- Right: Nav Links, Portal Switcher & Production Label -->
+<div class="flex items-center gap-3">
+<nav class="hidden xl:flex items-center space-x-1 text-label-md font-label-md">
+<a class="px-2.5 py-1 text-on-primary-container hover:text-on-primary rounded transition-colors" href="#plans">Plans</a>
+<a class="px-2.5 py-1 text-on-primary-container hover:text-on-primary rounded transition-colors" href="#portals">Portals</a>
+</nav>
+<!-- Portal Switcher Dropdowns / Quick Buttons -->
+<div class="flex items-center gap-2 border-l border-outline-variant/40 pl-3">
+<a class="px-2.5 py-1 text-label-sm font-label-sm bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-on-primary rounded-lg border border-outline-variant/40 transition-colors" href="@Url.Action("Login", "Customer")">
+          Subscriber Login
+        </a>
+<a class="px-2.5 py-1 text-label-sm font-label-sm bg-secondary hover:bg-secondary-container text-on-secondary rounded-lg font-semibold transition-colors flex items-center gap-1 shadow-sm" href="@Url.Action("Login", "Admin")">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>Staff Login</span>
+</a>
+</div>
+</div>
+</header>
+<!-- ================= HERO SECTION ================= -->
+<section class="relative bg-gradient-to-b from-primary-container via-surface-container-highest/20 to-background pt-12 pb-16 px-space-lg overflow-hidden border-b border-outline-variant/30">
+<!-- Subtle technical grid background effect -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#0066FF_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Hero text -->
+<div class="lg:col-span-12 space-y-6">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/20 text-secondary text-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>DIAL-UP &amp; BROADBAND INTERNET AND LANDLINE</span>
+</div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface tracking-tight leading-tight">
+            Nexus Telecom Service Marketing System
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-2xl leading-relaxed">
+            Dial-Up, Broadband and Landline connections. Orders are placed at our retail outlets, and customers can follow their order, bills and payments online.
+          </p>
+<!-- Secondary Quick Actions -->
+<div class="flex flex-wrap items-center gap-3 pt-2">
+<a class="h-9 px-4 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant font-label-md text-label-md rounded-lg flex items-center gap-2 transition-colors" href="#plans">
+<span class="material-symbols-outlined text-sm" data-icon="view_list">view_list</span>
+<span>View Plans</span>
+</a>
+<a class="h-9 px-4 text-secondary hover:underline font-label-md text-label-md flex items-center gap-1" href="#portals">
+<span>View Unified Role Portals</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+<!-- ================= PLANS SECTION (real plans from the Admin) ================= -->
+<section class="py-16 px-space-lg bg-surface-container-lowest border-b border-outline-variant" id="plans">
+<div class="max-w-7xl mx-auto">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<div class="text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-2">OUR PLANS</div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Dial-Up, Broadband and Landline plans</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2">
+          All plans are postpaid. Prices are in dollars and are the ones set by our Admin team.
+        </p>
+</div>
+@if (!Model.Any())
+{
+<div class="text-center text-body-md font-body-md text-on-surface-variant">No plans are published yet.</div>
+}
+@foreach (var group in Model.GroupBy(p => p.ConnectionType))
+{
+<h3 class="text-headline-md font-headline-md text-on-surface mb-4 mt-8">@group.Key</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+@foreach (var plan in group)
+{
+<div class="bg-surface rounded-xl border border-outline-variant p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant">@plan.ConnectionType.ToUpper()</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">@plan.PlanType</span>
+</div>
+<h4 class="text-headline-md font-headline-md text-on-surface">@plan.PlanName</h4>
+<div class="text-body-sm font-body-sm text-on-surface-variant mb-3">@plan.Speed</div>
+<div class="mb-4">
+<span class="text-headline-xl font-headline-xl font-data-tabular text-on-surface">$@plan.Price.ToString("N2")</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant"> / @(plan.ValidityDays >= 365 ? "year" : plan.ValidityDays >= 180 ? "6 months" : plan.ValidityDays >= 90 ? "3 months" : "month")</span>
+</div>
+@if (!string.IsNullOrWhiteSpace(plan.Description))
+{
+<ul class="space-y-1.5 text-body-sm font-body-sm text-on-surface-variant">
+@foreach (var line in plan.Description.Split('|', StringSplitOptions.RemoveEmptyEntries))
+{
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-secondary text-sm">check_circle</span><span>@line</span></li>
+}
+</ul>
+}
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30">
+<a href="@Url.Action("ApplyConnection", "Customer", new { type = plan.ConnectionType })" class="w-full py-2.5 bg-secondary hover:bg-secondary-container text-on-secondary font-label-md text-label-md rounded-lg font-semibold transition-colors flex items-center justify-center gap-1.5">
+<span>Apply for this plan</span>
+</a>
+</div>
+</div>
+}
+</div>
+}
+</div>
+</section>
+<!-- ================= ROLE-BASED PORTAL ACCESS SECTION ================= -->
+<section class="py-16 px-space-lg bg-surface border-b border-outline-variant" id="portals">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<div class="text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">SECURE IDENTITY ROLES</div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Unified Multi-Role Gateway</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">ASP.NET Core Identity &amp; Claims-based role routing for subscribers, operations staff, and enterprise administrators.</p>
+</div>
+<div class="text-label-sm font-code-sm text-outline">
+          SSO: SAML 2.0 / OIDC / Azure AD Integrated
+        </div>
+</div>
+<!-- Portal Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- Portal Card 1: Customer Self-Service -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary mb-4">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div class="text-label-sm font-label-sm text-secondary font-semibold uppercase">SUBSCRIBER ACCESS</div>
+<h3 class="text-title-sm font-title-sm text-on-surface mt-1">Customer Self-Service</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Pay invoices, reboot ONT optical terminals, schedule technicians, and monitor live latency telemetry.
+            </p>
+</div>
+<div class="mt-6 pt-3 border-t border-outline-variant">
+<a class="text-label-md font-label-md text-secondary hover:underline flex items-center justify-between font-semibold" href="@Url.Action("Login", "Customer")">
+<span>Launch Portal</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Portal Card 2: Field Ops & Technical Hub -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-700 mb-4">
+<span class="material-symbols-outlined" data-icon="construction">construction</span>
+</div>
+<div class="text-label-sm font-label-sm text-emerald-700 font-semibold uppercase">FIELD &amp; PROVISIONING</div>
+<h3 class="text-title-sm font-title-sm text-on-surface mt-1">Field Ops &amp; Technical Hub</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Feasibility checks, connection creation, activation and equipment assignment.
+            </p>
+</div>
+<div class="mt-6 pt-3 border-t border-outline-variant">
+<a class="text-label-md font-label-md text-secondary hover:underline flex items-center justify-between font-semibold" href="@Url.Action("Login", "Technical")">
+<span>Launch Portal</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Portal Card 3: Admin Operations Control -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-secondary-fixed mb-4">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</div>
+<div class="text-label-sm font-label-sm text-on-surface font-semibold uppercase">SYSTEM CONTROL</div>
+<h3 class="text-title-sm font-title-sm text-on-surface mt-1">Admin Operations Control</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Role permissions, BGP peer policies, system audit trails, and core telemetry alerts management.
+            </p>
+</div>
+<div class="mt-6 pt-3 border-t border-outline-variant">
+<a class="text-label-md font-label-md text-secondary hover:underline flex items-center justify-between font-semibold" href="@Url.Action("Login", "Admin")">
+<span>Launch Portal</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Portal Card 4: Accounts & Billing Center -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-4">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant font-semibold uppercase">FINANCIAL CONTROLS</div>
+<h3 class="text-title-sm font-title-sm text-on-surface mt-1">Accounts &amp; Billing Center</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Monthly bills with service tax and bulk discount, security deposits, payments and dues.
+            </p>
+</div>
+<div class="mt-6 pt-3 border-t border-outline-variant">
+<a class="text-label-md font-label-md text-secondary hover:underline flex items-center justify-between font-semibold" href="@Url.Action("Login", "Accounts")">
+<span>Launch Portal</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Portal Card 5: Retail Outlet -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary mb-4">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+</div>
+<div class="text-label-sm font-label-sm text-secondary font-semibold uppercase">RETAIL OUTLET</div>
+<h3 class="text-title-sm font-title-sm text-on-surface mt-1">Retail Order Desk</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Retail employees register customers, place connection orders and track feasibility, connections, bills and payments.
+            </p>
+</div>
+<div class="mt-6 pt-3 border-t border-outline-variant">
+<a class="text-label-md font-label-md text-secondary hover:underline flex items-center justify-between font-semibold" href="@Url.Action("Login", "Retail")">
+<span>Launch Portal</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FOOTER ================= -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant text-on-surface-variant py-8 px-space-lg text-body-sm">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-title-sm font-title-sm text-on-surface font-bold tracking-tight">
+<span class="material-symbols-outlined text-secondary" data-icon="hub">hub</span>
+<span>Nexus Telecom</span>
+</div>
+<div class="flex items-center gap-4 text-label-sm font-label-sm">
+<a class="hover:text-secondary transition-colors" href="#plans">Plans</a>
+<a class="hover:text-secondary transition-colors" href="#portals">Portals</a>
+</div>
+</div>
+</footer>
+<!-- ================= INLINE INTERACTIVE SCRIPT ================= -->
+<script>
+
+      </script>
+</body></html>

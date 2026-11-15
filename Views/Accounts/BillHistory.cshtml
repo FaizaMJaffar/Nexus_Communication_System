@@ -1,0 +1,48 @@
+@model List<Bill>
+
+@{
+    ViewData["Title"] = "Bill History";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Bill History</h1>
+        <p>Every bill that has been generated.</p>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Bill Id</th>
+        <th>Customer Id</th>
+        <th>Month</th>
+        <th>Bill Date</th>
+        <th>Charges</th>
+        <th>Security Deposit</th>
+        <th>Discount</th>
+        <th>Service Tax (12.24%)</th>
+        <th>Total</th>
+        <th>Previous Balance</th>
+        <th>Previous Payments</th>
+        <th>Total Payable</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var b in Model)
+    {
+        <tr>
+            <td>@b.BillId</td>
+            <td>@b.CustomerId</td>
+            <td>@b.BillingMonth</td>
+            <td>@b.BillDate.ToString("dd-MM-yyyy")</td>
+            <td>@b.SubTotal.ToString("N2")</td>
+            <td>@b.SecurityDeposit.ToString("N2")</td>
+            <td>@b.DiscountAmount.ToString("N2")</td>
+            <td>@b.ServiceTax.ToString("N2")</td>
+            <td>@b.TotalAmount.ToString("N2")</td>
+            <td>@b.PreviousBalance.ToString("N2")</td>
+            <td>@b.PreviousPayments.ToString("N2")</td>
+            <td><b>@b.TotalPayable.ToString("N2")</b></td>
+            <td><span class="badge b-@((b.Status ?? "").ToLower())">@b.Status</span></td>
+        </tr>
+    }
+</table>

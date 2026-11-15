@@ -1,0 +1,19 @@
+/* Admin portal - only what differs from nexus-base.css */
+
+/* legacy KPI links on the dashboard ( .stats / .stat ) rendered as Stitch KPI tiles */
+.portal-admin .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.portal-admin .stat { background: var(--nx-surface); border: 1px solid var(--nx-border); border-radius: var(--nx-r-lg); padding: 14px 16px; display: flex; flex-direction: column; color: var(--nx-text); }
+.portal-admin .stat:hover { text-decoration: none; border-color: var(--nx-blue); }
+.portal-admin .stat-num { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--nx-navy); line-height: 2.1rem; }
+.portal-admin .stat-label { color: var(--nx-muted); font-size: .6875rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; order: -1; margin-bottom: 6px; }
+
+/* data tables inside cards: let the card padding breathe */
+.portal-admin .card .table-wrap { margin: 0 -16px -16px; }
+.portal-admin .card .toolbar { margin-bottom: 12px; }
+.portal-admin .card .table th:first-child, .portal-admin .card .table td:first-child { padding-left: 16px; }
+.portal-admin .card .table th:last-child, .portal-admin .card .table td:last-child { padding-right: 16px; }
+.portal-admin .table .actions { display: flex; }
+.portal-admin form.inline .btn-danger { background: #fff; color: var(--nx-red-text); border-color: var(--nx-red-bd); }
+.portal-admin form.inline .btn-danger:hover { background: var(--nx-red-bg); }
+.portal-admin .card > form .form-actions { margin-top: 14px; }
+.portal-admin .card { overflow: hidden; }

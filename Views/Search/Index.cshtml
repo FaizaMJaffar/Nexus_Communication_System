@@ -1,0 +1,105 @@
+@model NexusCommunicationSystem.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Global Search";
+    ViewData["Active"] = "Search";
+    ViewData["Tab"] = "Index";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Global Search</h1>
+        <p>Search customers, orders and connections from one place.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="Index" class="nx-filter" data-search>
+        <div class="form-group" style="grid-column: span 2">
+            <label for="keyword">Keyword</label>
+            <input type="text" id="keyword" name="keyword" value="@Model.Keyword" placeholder="Name, email, phone, city, order #, connection #, plan or status" autofocus />
+        </div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Search</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Clear</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    <p class="muted mb">Found <strong>@Model.TotalResults</strong> result(s) for "@Model.Keyword".</p>
+
+    @if (Model.TotalResults == 0)
+    {
+        <div class="card empty">No results found. Try a different keyword.</div>
+    }
+    @if (Model.Customers.Any())
+    {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Customers</h3><span class="count-chip">@Model.Customers.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Joined</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Customers)
+        {
+            <tr><td>@c.Id</td><td><strong>@c.FullName</strong></td><td>@c.Email</td><td>@c.Phone</td><td>@c.City</td><td>@c.CreatedAt.ToString("dd MMM yyyy")</td></tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+    }
+    @if (Model.Orders.Any())
+    {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Orders</h3><span class="count-chip">@Model.Orders.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th><th style="text-align:right">Amount ($)</th></tr></thead>
+        <tbody>
+        @foreach (var o in Model.Orders)
+        {
+            <tr>
+                <td><a asp-action="OrderStatus" asp-route-orderNumber="@o.OrderNumber" class="mono">@o.OrderNumber</a></td>
+                <td>@o.Customer?.FullName</td>
+                <td>@o.ConnectionType - @o.PlanName</td>
+                <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                <td><span class="badge b-@((o.Status ?? "").ToLower())">@o.Status</span></td>
+                <td style="text-align:right">@o.TotalAmount.ToString("N0")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+    }
+    @if (Model.Connections.Any())
+    {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Connections</h3><span class="count-chip">@Model.Connections.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Account ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>Activated</th><th>Status</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Connections)
+        {
+            <tr>
+                <td><a asp-action="ConnectionStatus" asp-route-connectionNumber="@c.ConnectionNumber" class="mono">@c.ConnectionNumber</a></td>
+                <td>@c.Customer?.FullName</td>
+                <td>@c.ConnectionType</td>
+                <td>@c.PlanName</td>
+                <td>@(c.ActivatedAt.HasValue ? c.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
+                <td><span class="badge b-@((c.Status ?? "").ToLower())">@c.Status</span></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+    }
+}
+
+<script src="~/js/search.js" asp-append-version="true"></script>

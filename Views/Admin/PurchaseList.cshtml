@@ -1,0 +1,85 @@
+@model List<PurchaseOrder>
+@{
+    ViewData["Title"] = "Purchase List";
+    ViewData["Active"] = "PurchaseList";
+    var demand = (Dictionary<string, int>)ViewBag.Demand;
+    string current = ViewBag.Status as string ?? "All";
+    string Badge(string s) => s switch { "Received" => "badge-green", "Cancelled" => "badge-red", _ => "badge-blue" };
+}
+
+<div class="page-head">
+    <div>
+        <h1>Purchase List</h1>
+        <p>Equipment ordered from vendors for customer orders. Received goods are added to the equipment stock.</p>
+    </div>
+    <a asp-action="AddPurchase" class="btn btn-primary">+ New purchase</a>
+</div>
+
+<div class="card mb">
+    <h3>Customer orders waiting for a connection</h3>
+    @if (!demand.Any())
+    {
+        <p class="muted">No customer order is waiting for equipment right now.</p>
+    }
+    else
+    {
+        <p>
+            @foreach (var d in demand)
+            {
+                <span class="count-chip">@d.Key: @d.Value order(s)</span>
+            }
+        </p>
+    }
+    <p class="muted">Equipment available in stock: <b>@ViewBag.StockAvailable</b> &nbsp;|&nbsp; Already on order from vendors: <b>@ViewBag.OnOrder</b></p>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="PurchaseList" method="get" class="search-form">
+            <select name="status" class="form-control">
+                @foreach (var st in new[] { "All", "Ordered", "Received", "Cancelled" })
+                {
+                    <option value="@st" selected="@(current == st)">@st</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Purchase No</th><th>Vendor</th><th>Equipment</th><th>Qty</th><th>Unit Price</th><th>Total</th><th>For Customer Order</th><th>Ordered</th><th>Status</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.PurchaseNumber</td>
+                    <td>@(p.Vendor?.VendorName ?? "-")</td>
+                    <td>@p.EquipmentName <span class="muted">(@p.EquipmentType)</span></td>
+                    <td>@p.Quantity</td>
+                    <td>$@p.UnitPrice.ToString("N2")</td>
+                    <td>$@p.TotalAmount.ToString("N2")</td>
+                    <td>@(p.CustomerOrder?.OrderNumber ?? "-")</td>
+                    <td>@p.OrderDate.ToString("dd MMM yyyy")</td>
+                    <td><span class="badge @Badge(p.Status)">@p.Status</span></td>
+                    <td class="actions">
+                        @if (p.Status == "Ordered")
+                        {
+                            <form asp-action="ReceivePurchase" asp-route-id="@p.Id" method="post" class="inline">
+                                <button type="submit" class="btn btn-sm btn-success">Mark received</button>
+                            </form>
+                            <form asp-action="CancelPurchase" asp-route-id="@p.Id" method="post" class="inline" data-confirm="Cancel this purchase?">
+                                <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="10" class="empty">No purchases yet. Use "New purchase" to order equipment from a vendor.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

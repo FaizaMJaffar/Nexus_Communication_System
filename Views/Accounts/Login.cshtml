@@ -1,0 +1,39 @@
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Sign In";
+    ViewData["PortalKey"] = "Accounts";
+}
+
+<h1>Sign In to Nexus Portal</h1>
+<p class="lg-sub">Enter your enterprise credentials or smart badge ID to access your console.</p>
+
+<partial name="_PersonaSwitcher" />
+
+@if (ViewBag.Error != null)
+{
+    <div class="lg-err">@ViewBag.Error</div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="lg-field">
+        <div class="lg-field-top"><label for="username">Username / Work Email</label><span class="lg-hint">@@telecom.nexus.net</span></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">alternate_email</span>
+            <input id="username" name="username" type="text" value="@ViewBag.Username" autocomplete="username" required autofocus />
+        </div>
+    </div>
+    <div class="lg-field">
+        <div class="lg-field-top"><label for="password">Console Security Passkey</label><span class="lg-link">Forgot Password / Reset PIN</span></div>
+        <div class="lg-input">
+            <span class="material-symbols-outlined">lock</span>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+            <button type="button" class="lg-eye" data-nx-eye="password" tabindex="-1" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+        </div>
+    </div>
+    <label class="lg-check"><input type="checkbox" checked disabled /> Remember Workstation (Tier-1 Device Trust)</label>
+    <button type="submit" class="lg-submit">Authenticate &amp; Access Console <span class="material-symbols-outlined">arrow_forward</span></button>
+</form>
+
+<div class="lg-or">Or verified hardware federation</div>
+<button type="button" class="lg-fed"><span class="lg-ms"><i></i><i></i><i></i><i></i></span> Sign in with Corporate Azure AD</button>
+<button type="button" class="lg-fed"><span class="material-symbols-outlined">usb</span> Hardware Security Key (FIDO2 / YubiKey)</button>

@@ -1,0 +1,149 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\wwwroot\\css\\nexus-base.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:wwwroot\\css\\nexus-base.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\migrations\\20261026083633_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:migrations\\20261026083633_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026082120_final.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20261026082120_final.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026080617_finalChanges.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20261026080617_finalChanges.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|c:\\users\\khan\\downloads\\final project\\nexuscommunicationsystem final 3.1\\nexuscommunicationsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3F2A6B1C-8D4E-4A57-9C21-5B7E0D9A1F11}|NexusCommunicationSystem.csproj|solutionrelative:nexuscommunicationsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "nexus-base.css",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\wwwroot\\css\\nexus-base.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\nexus-base.css",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\wwwroot\\css\\nexus-base.css",
+              "RelativeToolTip": "wwwroot\\css\\nexus-base.css",
+              "ViewState": "AgIAAKoEAAAAWGZmZmYkwAoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-10-26T11:29:46.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "20261026083633_init.cs",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026083633_init.cs",
+              "RelativeDocumentMoniker": "Migrations\\20261026083633_init.cs",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026083633_init.cs",
+              "RelativeToolTip": "Migrations\\20261026083633_init.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T08:36:33.667Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "20261026082120_final.cs",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026082120_final.cs",
+              "RelativeDocumentMoniker": "Migrations\\20261026082120_final.cs",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026082120_final.cs",
+              "RelativeToolTip": "Migrations\\20261026082120_final.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T08:21:20.894Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AgIAAI0CAAAAAAAAAAAkwJkCAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T08:17:14.853Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAkwIIAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T08:16:12.646Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20261026080617_finalChanges.cs",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026080617_finalChanges.cs",
+              "RelativeDocumentMoniker": "Migrations\\20261026080617_finalChanges.cs",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\Migrations\\20261026080617_finalChanges.cs",
+              "RelativeToolTip": "Migrations\\20261026080617_finalChanges.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T08:06:20.237Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-10-26T08:02:51.02Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "NexusCommunicationSystem.csproj",
+              "DocumentMoniker": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\NexusCommunicationSystem.csproj",
+              "RelativeDocumentMoniker": "NexusCommunicationSystem.csproj",
+              "ToolTip": "C:\\Users\\khan\\Downloads\\final project\\NexusCommunicationSystem FINAL 3.1\\NexusCommunicationSystem.csproj",
+              "RelativeToolTip": "NexusCommunicationSystem.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-10-26T07:56:58.465Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

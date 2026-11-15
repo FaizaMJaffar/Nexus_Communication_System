@@ -1,0 +1,51 @@
+@model RetailShop
+@{
+    ViewData["Title"] = "Add Retail Shop";
+    ViewData["Active"] = "RetailShops";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Add Retail Shop</h1>
+        <p>Fill in the details below and save.</p>
+    </div>
+    <a asp-action="RetailShops" class="btn btn-outline">Back to list</a>
+</div>
+
+<div class="card">
+<form asp-action="AddRetailShop" method="post" class="form-grid">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <div class="form-group">
+        <label asp-for="ShopName">Shop Name <span class="req">*</span></label>
+        <input asp-for="ShopName" type="text" class="form-control" required />
+        <span asp-validation-for="ShopName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="OwnerName">Owner Name <span class="req">*</span></label>
+        <input asp-for="OwnerName" type="text" class="form-control" required />
+        <span asp-validation-for="OwnerName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City">City <span class="req">*</span></label>
+        <input asp-for="City" type="text" class="form-control" required />
+        <span asp-validation-for="City" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label asp-for="Address">Address</label>
+        <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Address" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone">Phone <span class="req">*</span></label>
+        <input asp-for="Phone" type="tel" class="form-control" required />
+        <span asp-validation-for="Phone" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label class="check-row"><input asp-for="IsActive" type="checkbox" /> Active</label>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Save retail shop</button>
+        <a asp-action="RetailShops" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

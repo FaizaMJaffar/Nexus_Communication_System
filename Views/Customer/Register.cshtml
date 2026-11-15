@@ -1,0 +1,76 @@
+@model RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Create Account";
+    ViewData["PortalKey"] = "Customer";
+    ViewData["Wide"] = true;
+}
+
+<h1>Create Your Nexus Account</h1>
+<p class="lg-sub">Join Nexus Communication and apply for your connection.</p>
+
+<form asp-action="Register" method="post" novalidate>
+    <div asp-validation-summary="ModelOnly" class="lg-err"></div>
+
+    <div class="lg-grid">
+        <div class="lg-field">
+            <div class="lg-field-top"><label asp-for="FullName"></label></div>
+            <div class="lg-input">
+                <span class="material-symbols-outlined">person</span>
+                <input asp-for="FullName" type="text" placeholder="Enter your full name" />
+            </div>
+            <span asp-validation-for="FullName" class="lg-fielderr"></span>
+        </div>
+        <div class="lg-field">
+            <div class="lg-field-top"><label asp-for="Email"></label></div>
+            <div class="lg-input">
+                <span class="material-symbols-outlined">alternate_email</span>
+                <input asp-for="Email" type="email" placeholder="example&#64;email.com" />
+            </div>
+            <span asp-validation-for="Email" class="lg-fielderr"></span>
+        </div>
+        <div class="lg-field">
+            <div class="lg-field-top"><label asp-for="Phone"></label></div>
+            <div class="lg-input">
+                <span class="material-symbols-outlined">call</span>
+                <input asp-for="Phone" type="tel" placeholder="03XXXXXXXXX" />
+            </div>
+            <span asp-validation-for="Phone" class="lg-fielderr"></span>
+        </div>
+        <div class="lg-field">
+            <div class="lg-field-top"><label asp-for="City"></label></div>
+            <div class="lg-input">
+                <span class="material-symbols-outlined">location_city</span>
+                <input asp-for="City" type="text" list="cityList" placeholder="Enter city" />
+            </div>
+            <datalist id="cityList">
+                @foreach (var c in PlanCatalog.Cities)
+                {
+                    <option value="@c"></option>
+                }
+            </datalist>
+            <span asp-validation-for="City" class="lg-fielderr"></span>
+        </div>
+        <div class="lg-field lg-full">
+            <div class="lg-field-top"><label asp-for="Address"></label></div>
+            <div class="lg-input lg-area">
+                <span class="material-symbols-outlined">home</span>
+                <textarea asp-for="Address" rows="3" placeholder="Enter your complete address"></textarea>
+            </div>
+            <span asp-validation-for="Address" class="lg-fielderr"></span>
+        </div>
+        <div class="lg-field lg-full">
+            <div class="lg-field-top"><label asp-for="Password"></label></div>
+            <div class="lg-input">
+                <span class="material-symbols-outlined">lock</span>
+                <input asp-for="Password" placeholder="Create a password" />
+                <button type="button" class="lg-eye" data-nx-eye="Password" tabindex="-1" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+            </div>
+            <span asp-validation-for="Password" class="lg-fielderr"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="lg-submit">Create Account <span class="material-symbols-outlined">arrow_forward</span></button>
+</form>
+
+<p class="lg-back">Already have an account? <a asp-action="Login">Log in</a></p>

@@ -1,0 +1,76 @@
+@{
+    var active = ViewData["Active"] as string ?? "";
+    string Act(string k) => active == k ? "active" : "";
+    var uname = User.Identity?.Name ?? "Retail Employee";
+    var initials = uname.Length >= 2 ? uname.Substring(0, 2).ToUpper() : uname.ToUpper();
+    var shopName = ViewData["ShopName"] as string ?? "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Retail</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/admin/logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/nexus-base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="portal-admin">
+<header class="nx-topbar">
+    <button type="button" class="nx-menu-btn" id="nxMenuBtn" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+    <a class="nx-brand" asp-controller="Retail" asp-action="Dashboard"><span class="material-symbols-outlined">hub</span> Nexus Telecom</a>
+    <span class="nx-sub-brand">Retail Outlet</span>
+    <div class="nx-top-right">
+        <div class="nx-user">
+            <div class="nx-user-meta">
+                <div class="nx-user-name">@uname</div>
+                <div class="nx-user-role">@(string.IsNullOrEmpty(shopName) ? "Retail Employee" : shopName)</div>
+            </div>
+            <span class="nx-avatar">@initials</span>
+            <form asp-controller="Retail" asp-action="Logout" method="post" class="inline">
+                <button type="submit" class="nx-logout">Logout</button>
+            </form>
+        </div>
+    </div>
+</header>
+<aside class="nx-sidebar" id="nxSidebar">
+    <div class="nx-side-title"><strong>Nexus Retail Suite</strong><span>Order Desk</span></div>
+    <nav class="nx-nav">
+        <a asp-controller="Retail" asp-action="Dashboard" class="@Act("Dashboard")"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+        <a asp-controller="Retail" asp-action="Customers" class="@Act("Customers")"><span class="material-symbols-outlined">groups</span><span>Customers &amp; New Order</span></a>
+        <a asp-controller="Retail" asp-action="Orders" class="@Act("Orders")"><span class="material-symbols-outlined">assignment</span><span>Orders</span></a>
+        <a asp-controller="Retail" asp-action="TrackStatus" class="@Act("TrackStatus")"><span class="material-symbols-outlined">travel_explore</span><span>Track Status</span></a>
+        <a asp-controller="Retail" asp-action="Connections" class="@Act("Connections")"><span class="material-symbols-outlined">cable</span><span>Connections</span></a>
+        <a asp-controller="Retail" asp-action="Bills" class="@Act("Bills")"><span class="material-symbols-outlined">receipt_long</span><span>Bills</span></a>
+        <a asp-controller="Retail" asp-action="Payments" class="@Act("Payments")"><span class="material-symbols-outlined">payments</span><span>Payments</span></a>
+    </nav>
+    <div class="nx-side-bottom">
+        <a asp-controller="Home" asp-action="Index"><span class="material-symbols-outlined">home</span><span>All portals</span></a>
+        <button type="button" id="nxCollapse"><span class="material-symbols-outlined">keyboard_double_arrow_left</span><span class="nx-collapse-label">Collapse view</span></button>
+    </div>
+</aside>
+<div class="nx-backdrop" id="nxBackdrop"></div>
+<div class="nx-main">
+    <div class="nx-crumbs">
+        <a asp-controller="Home" asp-action="Index">Nexus</a><span class="sep">/</span><span>Retail</span><span class="sep">/</span><b>@ViewData["Title"]</b>
+    </div>
+    <main class="nx-content">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success" data-autohide>@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="nx-footer"><span>&copy; @DateTime.Now.Year Nexus Communication System</span><span>Retail</span></footer>
+</div>
+<script src="~/js/nexus.js" asp-append-version="true"></script>
+<script src="~/js/admin.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

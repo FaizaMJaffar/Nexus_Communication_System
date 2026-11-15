@@ -1,0 +1,71 @@
+@model List<WorkOrderRow>
+@{
+    ViewData["Title"] = "Work Orders";
+    ViewData["Active"] = "Orders";
+    string current = ViewBag.CurrentStatus as string ?? "All";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="tx-alert tx-alert-success">@TempData["Success"]</div>
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / <span class="current">Work Orders Queue</span></div>
+        <h1 class="tx-page-title">Dispatched Field Work Orders</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-primary" asp-action="FeasibilityCheck">New Feasibility Check</a>
+    </div>
+</div>
+
+<div class="tx-card">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Work Orders</h2>
+        <div class="tx-tabs">
+            <a class="@(current == "All" ? "active" : "")" asp-action="Orders" asp-route-status="All">All</a>
+            <a class="@(current == "Pending" ? "active" : "")" asp-action="Orders" asp-route-status="Pending">Pending Survey</a>
+            <a class="@(current == "Feasible" ? "active" : "")" asp-action="Orders" asp-route-status="Feasible">Feasible</a>
+            <a class="@(current == "Rejected" ? "active" : "")" asp-action="Orders" asp-route-status="Rejected">Rejected</a>
+        </div>
+    </div>
+
+    <div class="tx-table-wrap">
+        <table class="tx-table">
+            <thead>
+                <tr>
+                    <th>Work Order #</th>
+                    <th>Customer</th>
+                    <th>Connection / Plan</th>
+                    <th>City</th>
+                    <th>Feasibility Status</th>
+                    <th>Checked By</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="7" class="tx-muted">No work orders found for this filter.</td></tr>
+                }
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td><span class="tx-wo">WO-@r.OrderId</span><div class="tx-muted">@r.OrderNumber</div></td>
+                        <td>@r.CustomerName</td>
+                        <td>@r.ConnectionType - @r.PlanName</td>
+                        <td>@r.City</td>
+                        <td><span class="tx-badge tx-badge-@r.FeasibilityStatus.ToLower()">@r.FeasibilityStatus</span></td>
+                        <td>@(r.CheckedBy ?? "-")</td>
+                        <td>
+                            <a class="tx-btn tx-btn-secondary" asp-action="OrderDetails" asp-route-id="@r.OrderId">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tx-card-foot">Showing @Model.Count work order(s)</div>
+</div>

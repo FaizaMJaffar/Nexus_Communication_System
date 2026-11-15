@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Communication System</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/admin/logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/nexus-base.css" asp-append-version="true" />
+</head>
+<body>
+<div class="lg">
+    <section class="lg-left">
+        <a class="lg-brand" asp-controller="Home" asp-action="Index">
+            <span class="lg-logo"><span class="material-symbols-outlined">hub</span></span>
+            <span><b>Nexus Communication System</b><small>Enterprise Telecom &amp; ISP ERP</small></span>
+        </a>
+        <h2 class="lg-tag">Connecting People. Powering Possibilities.</h2>
+        <p class="lg-lede">Enterprise-grade orchestration for carrier backbones, automated DWDM/FTTH provisioning, customer telemetry, and NOC operations.</p>
+
+        <div class="lg-map">
+            <div class="lg-chips">
+                <span class="lg-chip"><i></i> Core Mesh: 99.999% SLA Uptime</span>
+                <span class="lg-chip"><span class="material-symbols-outlined">speed</span> Global Transit: 4.12 Tbps Peak</span>
+            </div>
+            <span class="lg-cert"><span class="material-symbols-outlined">verified_user</span> Carrier-Grade ISO 27001 Certified</span>
+        </div>
+
+        <div class="lg-stats">
+            <div class="lg-stat"><span>Active Nodes</span><b>14,892 DWDM</b><em><span class="material-symbols-outlined">arrow_upward</span> +32 today</em></div>
+            <div class="lg-stat"><span>Backbone RTT</span><b>3.84 ms Avg</b><em><i></i> Nominal</em></div>
+            <div class="lg-stat"><span>FTTH PON Links</span><b>2.41M Sync</b><em><span class="material-symbols-outlined">sync</span> 100% telemetry</em></div>
+        </div>
+
+        <div class="lg-left-foot">
+            <span><i></i>Nexus Core ERP v4.8 &bull; NOC Secure Gateway</span>
+            <span>STATION: NOC-PRIMARY-VA-01</span>
+        </div>
+    </section>
+
+    <section class="lg-right">
+        <div class="lg-top">
+            <span class="lg-sso"><i></i> Single Sign-On &amp; NOC Gateway</span>
+            <span class="lg-lang"><span class="material-symbols-outlined">language</span> English (US) &bull; UTC-5</span>
+        </div>
+        <div class="lg-main">
+            <div class="lg-form @(ViewData["Wide"] as bool? == true ? "wide" : "")">
+                @RenderBody()
+            </div>
+        </div>
+        <div class="lg-foot">
+            <p><span class="material-symbols-outlined">shield</span> Protected by Nexus Shield Zero-Trust Architecture. Authorized personnel only. All access attempts are cryptographically audited.</p>
+            <div><span>SHA-256 TLS 1.3 Certified</span><span>Mutual-TLS NOC Gateway Enabled</span></div>
+        </div>
+    </section>
+</div>
+<script src="~/js/nexus.js" asp-append-version="true"></script>
+</body>
+</html>

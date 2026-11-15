@@ -1,0 +1,51 @@
+@model List<Payment>
+@{
+    ViewData["Title"] = "Payments";
+    ViewData["Active"] = "Payments";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Payments</h1>
+        <p>Payments received for your outlet's connections.</p>
+    </div>
+    <a asp-action="AddPayment" class="btn btn-primary"><span class="material-symbols-outlined">add_card</span> Record payment</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Payments" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Account ID, customer or reference..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="Payments" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Payment #</th><th>Date</th><th>Account ID</th><th>Customer</th><th>Bill #</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead>
+            <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.PaymentId</td>
+                    <td>@p.PaymentDate.ToString("dd MMM yyyy")</td>
+                    <td>@(p.Bill?.Connection?.ConnectionNumber ?? "-")</td>
+                    <td>@(p.Bill?.Customer?.FullName ?? "-")</td>
+                    <td>@p.BillId</td>
+                    <td>$@p.AmountPaid.ToString("N2")</td>
+                    <td>@p.PaymentMethod</td>
+                    <td>@(p.ReferenceNo ?? "-")</td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="empty">No payment yet.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

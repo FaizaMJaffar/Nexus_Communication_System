@@ -1,0 +1,36 @@
+@model Connection
+@{
+    ViewData["Title"] = "Activate Connection";
+    ViewData["Active"] = "Connections";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Connections & Circuits / <span class="current">Activate</span></div>
+        <h1 class="tx-page-title">Activate @Model.ConnectionNumber</h1>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Confirm Activation</h2>
+        <span class="tx-badge tx-badge-@Model.StatusCss">@Model.Status</span>
+    </div>
+    <form asp-action="ActivateConnection" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="tx-card-body">
+            @if (Model.Status == "Temporarily Inactive")
+            {
+                <p class="tx-muted">This connection is temporarily inactive. Re-activate account @Model.ConnectionNumber (WO-@Model.OrderId)?</p>
+            }
+            else
+            {
+                <p class="tx-muted">The line is ready to go live for WO-@Model.OrderId (account @Model.ConnectionNumber). Activate this connection?</p>
+            }
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-primary">Activate Connection</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="Connections">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

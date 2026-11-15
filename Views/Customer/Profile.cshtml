@@ -1,0 +1,37 @@
+@model Customer
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="page-header">
+    <div>
+        <h1>My Profile</h1>
+        <p>Your account information</p>
+    </div>
+    <a class="btn" asp-action="EditProfile">✏️ Edit Profile</a>
+</div>
+
+<div class="grid grid-2">
+    <div class="card">
+        <div class="profile-head">
+            <div class="avatar">@Model.FullName.Substring(0, 1).ToUpper()</div>
+            <div>
+                <h2>@Model.FullName</h2>
+                <span class="muted">@("Customer ID: NX-C" + Model.Id.ToString("D4"))</span>
+            </div>
+        </div>
+        <ul class="detail-list">
+            <li><span class="k">Email</span><span class="v">@Model.Email</span></li>
+            <li><span class="k">Contact Number</span><span class="v">@Model.Phone</span></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Address &amp; Account</h3>
+        <ul class="detail-list">
+            <li><span class="k">City</span><span class="v">@Model.City</span></li>
+            <li><span class="k">Address</span><span class="v">@Model.Address</span></li>
+            <li><span class="k">Member Since</span><span class="v">@Model.CreatedAt.ToString("dd MMM yyyy")</span></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+@model Equipment
+@{
+    ViewData["Title"] = "Edit Equipment";
+    ViewData["Active"] = "Equipment";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Edit Equipment</h1>
+        <p>Update the details below and save.</p>
+    </div>
+    <a asp-action="Equipment" class="btn btn-outline">Back to list</a>
+</div>
+
+<div class="card">
+<form asp-action="EditEquipment" method="post" class="form-grid">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="EquipmentName">Equipment Name <span class="req">*</span></label>
+        <input asp-for="EquipmentName" type="text" class="form-control" required />
+        <span asp-validation-for="EquipmentName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EquipmentType">Equipment Type <span class="req">*</span></label>
+        <input asp-for="EquipmentType" type="text" class="form-control" required />
+        <span asp-validation-for="EquipmentType" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SerialNumber">Serial Number</label>
+        <input asp-for="SerialNumber" type="text" class="form-control" />
+        <span asp-validation-for="SerialNumber" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Quantity">Quantity <span class="req">*</span></label>
+        <input asp-for="Quantity" type="number" class="form-control" min="0" required />
+        <span asp-validation-for="Quantity" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UnitPrice">Unit Price <span class="req">*</span></label>
+        <input asp-for="UnitPrice" type="number" class="form-control" step="0.01" min="0" required />
+        <span asp-validation-for="UnitPrice" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status">Status <span class="req">*</span></label>
+        <select asp-for="Status" class="form-control" required><option value="Available">Available</option><option value="In Use">In Use</option><option value="Under Repair">Under Repair</option><option value="Damaged">Damaged</option></select>
+        <span asp-validation-for="Status" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location">Location</label>
+        <input asp-for="Location" type="text" class="form-control" placeholder="e.g. Main warehouse" />
+        <span asp-validation-for="Location" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchaseDate">Purchase Date</label>
+        <input asp-for="PurchaseDate" type="date" class="form-control" />
+        <span asp-validation-for="PurchaseDate" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VendorId">Vendor</label>
+        <select asp-for="VendorId" asp-items="(SelectList)ViewBag.Vendors" class="form-control"><option value="">-- No vendor --</option></select>
+        <span asp-validation-for="VendorId" class="field-error"></span>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a asp-action="Equipment" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

@@ -1,0 +1,50 @@
+@model List<Customer>
+@{
+    ViewData["Title"] = "Customers";
+    ViewData["Active"] = "Customers";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Customers &amp; New Order</h1>
+        <p>Find the customer and press "New order". New customers must be registered first.</p>
+    </div>
+    <a asp-action="RegisterCustomer" class="btn btn-primary"><span class="material-symbols-outlined">person_add</span> Register customer</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Customers" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Name, email, phone or city..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="Customers" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>#</th><th>Full Name</th><th>Email</th><th>Phone</th><th>City</th><th>Registered</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.FullName</td>
+                    <td>@c.Email</td>
+                    <td>@c.Phone</td>
+                    <td>@c.City</td>
+                    <td>@c.CreatedAt.ToString("dd MMM yyyy")</td>
+                    <td class="actions"><a asp-action="NewOrder" asp-route-customerId="@c.Id" class="btn btn-sm btn-primary">New order</a></td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="7" class="empty">No customer found. Register the customer first.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

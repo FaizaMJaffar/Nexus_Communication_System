@@ -1,0 +1,56 @@
+@model List<RetailShop>
+@{
+    ViewData["Title"] = "Retail Shops";
+    ViewData["Active"] = "RetailShops";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Retail Shops</h1>
+        <p>Manage retail shops that sell SIMs and recharge.</p>
+    </div>
+    <a asp-action="AddRetailShop" class="btn btn-primary">+ Add retail shop</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="RetailShops" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Search..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="RetailShops" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>#</th><th>Shop Name</th><th>Owner Name</th><th>City</th><th>Address</th><th>Phone</th><th>Status</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.ShopName</td>
+                    <td>@item.OwnerName</td>
+                    <td>@item.City</td>
+                    <td>@item.Address</td>
+                    <td>@item.Phone</td>
+                    <td><span class="badge @(item.IsActive ? "badge-green" : "badge-red")">@(item.IsActive ? "Active" : "Inactive")</span></td>
+                    <td class="actions">
+                        <a asp-action="EditRetailShop" asp-route-id="@item.Id" class="btn btn-sm btn-outline">Edit</a>
+                        <form asp-action="DeleteRetailShop" asp-route-id="@item.Id" method="post" class="inline" data-confirm="Delete this retail shop? This cannot be undone.">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="empty">Nothing here yet. Use the add button to create a record.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

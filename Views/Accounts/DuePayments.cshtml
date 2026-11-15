@@ -1,0 +1,34 @@
+@model List<Bill>
+
+@{
+    ViewData["Title"] = "Due Payments";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Due Payments</h1>
+        <p>Bills that still need to be paid. Overdue rows are highlighted.</p>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Bill Id</th>
+        <th>Customer Id</th>
+        <th>Month</th>
+        <th>Due Date</th>
+        <th>Total</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var b in Model)
+    {
+        <tr>
+            <td>@b.BillId</td>
+            <td>@b.CustomerId</td>
+            <td>@b.BillingMonth</td>
+            <td>@b.DueDate.ToString("dd-MM-yyyy")</td>
+            <td>@b.TotalAmount</td>
+            <td><span class="badge b-@((b.Status ?? "").ToLower())">@b.Status</span></td>
+        </tr>
+    }
+</table>

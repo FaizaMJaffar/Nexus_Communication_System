@@ -1,0 +1,49 @@
+@model StatusLookupViewModel
+@{
+    string Badge(string? s) => s switch
+    {
+        "Completed" or "Feasible" or "Paid" or "Active" => "badge-green",
+        "Rejected" or "Permanently Inactive" => "badge-red",
+        "Processing" or "Pending" or "Unpaid" or "Temporarily Inactive" => "badge-blue",
+        _ => "badge-purple"
+    };
+}
+
+<div class="card mb">
+    <form asp-action="TrackStatus" method="get" class="search-form">
+        <input type="text" name="q" value="@Model.Query" class="form-control" placeholder="Order ID (e.g. B0000000001) or Account ID (e.g. B101000000000001)" maxlength="16" />
+        <button type="submit" class="btn btn-primary">Check status</button>
+        @if (Model.Searched)
+        {
+            <a asp-action="TrackStatus" class="btn btn-outline">Clear</a>
+        }
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    if (!Model.Results.Any())
+    {
+        <div class="card"><div class="empty">No order or account found for "@Model.Query".</div></div>
+    }
+    foreach (var r in Model.Results)
+    {
+        <div class="card mb">
+            <h3>Order @r.OrderNumber</h3>
+            <table class="table">
+                <tbody>
+                    <tr><th>Customer</th><td>@r.CustomerName</td></tr>
+                    <tr><th>Contact number</th><td>@r.ContactNumber</td></tr>
+                    <tr><th>Connection / plan</th><td>@r.ConnectionType, @r.PlanName</td></tr>
+                    <tr><th>Order date</th><td>@r.OrderDate.ToString("dd MMM yyyy")</td></tr>
+                    <tr><th>Order status</th><td><span class="badge @Badge(r.OrderStatus)">@r.OrderStatus</span></td></tr>
+                    <tr><th>Feasibility</th><td><span class="badge @Badge(r.FeasibilityStatus)">@r.FeasibilityStatus</span></td></tr>
+                    <tr><th>Account ID</th><td>@(r.AccountId ?? "Not created yet")</td></tr>
+                    <tr><th>Connection status</th><td>@if (r.ConnectionStatus == null) { <span class="muted">-</span> } else { <span class="badge @Badge(r.ConnectionStatus)">@r.ConnectionStatus</span> }</td></tr>
+                    <tr><th>Order payment</th><td><span class="badge @Badge(r.PaymentStatus)">@r.PaymentStatus</span></td></tr>
+                    <tr><th>Amount due</th><td><b>$@r.DueAmount.ToString("N2")</b></td></tr>
+                </tbody>
+            </table>
+        </div>
+    }
+}

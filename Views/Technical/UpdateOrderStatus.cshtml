@@ -1,0 +1,46 @@
+@model Feasibility
+@{
+    ViewData["Title"] = "Update Status";
+    ViewData["Active"] = "Orders";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Work Orders Queue / <span class="current">Update Status</span></div>
+        <h1 class="tx-page-title">Update Status: WO-@Model.OrderId</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="OrderDetails" asp-route-id="@Model.OrderId">Back to Details</a>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Change Feasibility Status</h2>
+        <span class="tx-badge tx-badge-@Model.Status.ToLower()">@Model.Status</span>
+    </div>
+
+    <form asp-action="UpdateOrderStatus" method="post">
+        <input type="hidden" name="id" value="@Model.FeasibilityId" />
+        <div class="tx-card-body">
+            <div class="tx-form-group">
+                <label class="tx-label" for="status">New Status</label>
+                <select id="status" name="status" class="tx-select">
+                    <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option>
+                    <option value="Feasible" selected="@(Model.Status == "Feasible")">Feasible</option>
+                    <option value="Rejected" selected="@(Model.Status == "Rejected")">Rejected</option>
+                </select>
+            </div>
+
+            <div class="tx-form-group">
+                <label class="tx-label" for="remarks">Remarks</label>
+                <textarea id="remarks" name="remarks" class="tx-textarea" placeholder="Reason for the change (optional)">@Model.Remarks</textarea>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-primary">Save Status</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="OrderDetails" asp-route-id="@Model.OrderId">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,81 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="nx-welcome">
+    <div>
+        <h1>Welcome back, @Model.Customer.FullName</h1>
+        <p>Manage your connections, orders and bills from one place.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="ApplyConnection"><span class="material-symbols-outlined">add_circle</span> New Connection</a>
+</div>
+
+<div class="nx-quick">
+    <a asp-action="ApplyConnection"><span class="ico"><span class="material-symbols-outlined">add_circle</span></span><span><b>Apply Connection</b><small>Choose a plan and apply</small></span></a>
+    <a asp-action="MyConnections"><span class="ico"><span class="material-symbols-outlined">cell_tower</span></span><span><b>My Connections</b><small>Status of your services</small></span></a>
+    <a asp-action="MyBills"><span class="ico"><span class="material-symbols-outlined">credit_card</span></span><span><b>Pay Bills</b><small>View and pay invoices</small></span></a>
+    <a asp-action="Feedback"><span class="ico"><span class="material-symbols-outlined">support_agent</span></span><span><b>Give Feedback</b><small>Tell us how we're doing</small></span></a>
+</div>
+
+<div class="nx-kpis">
+    <div class="nx-kpi">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Total orders</span><span class="nx-kpi-ico"><span class="material-symbols-outlined">shopping_cart</span></span></div>
+        <div class="nx-kpi-value">@Model.TotalOrders</div>
+        <div class="nx-kpi-note"><span class="dot blue"></span> All applications</div>
+    </div>
+    <div class="nx-kpi">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Active connections</span><span class="nx-kpi-ico green"><span class="material-symbols-outlined">cell_tower</span></span></div>
+        <div class="nx-kpi-value">@Model.ActiveConnections</div>
+        <div class="nx-kpi-note"><span class="dot"></span> Currently live</div>
+    </div>
+    <div class="nx-kpi">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Pending connections</span><span class="nx-kpi-ico amber"><span class="material-symbols-outlined">hourglass_top</span></span></div>
+        <div class="nx-kpi-value">@Model.PendingConnections</div>
+        <div class="nx-kpi-note"><span class="dot amber"></span> Awaiting activation</div>
+    </div>
+    <div class="nx-kpi">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Unpaid bills</span><span class="nx-kpi-ico red"><span class="material-symbols-outlined">receipt_long</span></span></div>
+        <div class="nx-kpi-value"><small>$</small> @Model.PendingBills.ToString("N0")</div>
+        <div class="nx-kpi-note"><span class="dot red"></span> Outstanding amount</div>
+    </div>
+</div>
+
+<div class="card nx-card-flush">
+    <div class="card-head">
+        <h3>Recent Orders</h3>
+        <a class="btn btn-outline btn-sm" asp-action="MyOrders">View All</a>
+    </div>
+
+    @if (!Model.RecentOrders.Any())
+    {
+        <div class="empty">
+            <span class="big">📭</span>
+            You have no orders yet.
+            <div class="mt"><a class="btn btn-sm btn-primary" asp-action="ApplyConnection">Apply for your first connection</a></div>
+        </div>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Order ID</th><th>Plan</th><th>Amount</th><th>Date</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model.RecentOrders)
+                    {
+                        <tr>
+                            <td><strong class="mono">@o.OrderNumber</strong></td>
+                            <td>@o.ConnectionType - @o.PlanName</td>
+                            <td>$@o.TotalAmount.ToString("N2")</td>
+                            <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge b-@o.StatusCss">@o.Status</span></td>
+                            <td><a asp-action="OrderDetails" asp-route-id="@o.Id">Details</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

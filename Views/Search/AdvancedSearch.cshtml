@@ -1,0 +1,162 @@
+@model NexusCommunicationSystem.Models.AdvancedSearchViewModel
+@{
+    ViewData["Title"] = "Advanced Search";
+    ViewData["Active"] = "AdvancedSearch";
+    ViewData["Tab"] = "AdvancedSearch";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Advanced Search</h1>
+        <p>Pick a category, then filter by keyword, status, date and amount.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="AdvancedSearch" class="nx-filter" data-search>
+        <div class="form-group"><label for="Category">Category</label>
+            <select id="Category" name="Category">
+                @foreach (var c in new[] { "Customers", "Orders", "Connections", "Bills" }) { <option value="@c" selected="@(Model.Category == c)">@c</option> }
+            </select></div>
+        <div class="form-group"><label for="Keyword">Keyword</label><input type="text" id="Keyword" name="Keyword" value="@Model.Keyword" placeholder="Name, number, plan, month..." /></div>
+        <div class="form-group"><label for="Contact">Contact number</label><input type="text" id="Contact" name="Contact" value="@Model.Contact" placeholder="Customer phone" /></div>
+        <div class="form-group"><label for="ConnectionType">Connection type</label>
+            <select id="ConnectionType" name="ConnectionType">
+                <option value="">All</option>
+                @foreach (var t in new[] { "Dial-Up", "Broadband", "Landline" }) { <option value="@t" selected="@(Model.ConnectionType == t)">@t</option> }
+            </select></div>
+        <div class="form-group"><label for="advStatus">Status</label>
+            <select id="advStatus" name="Status" data-selected="@Model.Status"><option value="">All</option></select></div>
+        <div class="form-group"><label for="FromDate">From date</label><input type="date" id="FromDate" name="FromDate" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group"><label for="ToDate">To date</label><input type="date" id="ToDate" name="ToDate" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group amount-field"><label for="MinAmount">Min amount</label><input type="number" step="0.01" id="MinAmount" name="MinAmount" value="@Model.MinAmount" /></div>
+        <div class="form-group amount-field"><label for="MaxAmount">Max amount</label><input type="number" step="0.01" id="MaxAmount" name="MaxAmount" value="@Model.MaxAmount" /></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Search</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    @if (Model.Category == "Customers")
+    {
+        @if (Model.Customers.Any())
+        {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Customers</h3><span class="count-chip">@Model.Customers.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Joined</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Customers)
+        {
+            <tr><td>@c.Id</td><td><strong>@c.FullName</strong></td><td>@c.Email</td><td>@c.Phone</td><td>@c.City</td><td>@c.CreatedAt.ToString("dd MMM yyyy")</td></tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+        }
+        else
+        {
+            <div class="card empty">No customers found.</div>
+        }
+    }
+    @if (Model.Category == "Connections")
+    {
+        @if (Model.Connections.Any())
+        {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Connections</h3><span class="count-chip">@Model.Connections.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Account ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>Activated</th><th>Status</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Connections)
+        {
+            <tr>
+                <td><a asp-action="ConnectionStatus" asp-route-connectionNumber="@c.ConnectionNumber" class="mono">@c.ConnectionNumber</a></td>
+                <td>@c.Customer?.FullName</td>
+                <td>@c.ConnectionType</td>
+                <td>@c.PlanName</td>
+                <td>@(c.ActivatedAt.HasValue ? c.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
+                <td><span class="badge b-@((c.Status ?? "").ToLower())">@c.Status</span></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+        }
+        else
+        {
+            <div class="card empty">No connections found.</div>
+        }
+    }
+    @if (Model.Category == "Bills")
+    {
+        @if (Model.Bills.Any())
+        {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Bills</h3><span class="count-chip">@Model.Bills.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Bill #</th><th>Customer</th><th>Month</th><th>Bill Date</th><th>Due Date</th><th>Status</th><th style="text-align:right">Total ($)</th></tr></thead>
+        <tbody>
+        @foreach (var b in Model.Bills)
+        {
+            <tr>
+                <td>@b.BillId</td><td>@b.Customer?.FullName</td><td>@b.BillingMonth</td>
+                <td>@b.BillDate.ToString("dd MMM yyyy")</td><td>@b.DueDate.ToString("dd MMM yyyy")</td>
+                <td><span class="badge b-@((b.Status ?? "").ToLower())">@b.Status</span></td>
+                <td style="text-align:right">@b.TotalAmount.ToString("N0")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+        }
+        else
+        {
+            <div class="card empty">No bills found.</div>
+        }
+    }
+    @if (Model.Category == "Orders")
+    {
+        @if (Model.Orders.Any())
+        {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Orders</h3><span class="count-chip">@Model.Orders.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th><th style="text-align:right">Amount ($)</th></tr></thead>
+        <tbody>
+        @foreach (var o in Model.Orders)
+        {
+            <tr>
+                <td><a asp-action="OrderStatus" asp-route-orderNumber="@o.OrderNumber" class="mono">@o.OrderNumber</a></td>
+                <td>@o.Customer?.FullName</td>
+                <td>@o.ConnectionType - @o.PlanName</td>
+                <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                <td><span class="badge b-@((o.Status ?? "").ToLower())">@o.Status</span></td>
+                <td style="text-align:right">@o.TotalAmount.ToString("N0")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+        }
+        else
+        {
+            <div class="card empty">No orders found.</div>
+        }
+    }
+}
+
+<script src="~/js/search.js" asp-append-version="true"></script>

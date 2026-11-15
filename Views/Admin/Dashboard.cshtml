@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Active"] = "Dashboard";
+    var employees = ViewBag.RecentEmployees as List<Employee> ?? new List<Employee>();
+    var plans = ViewBag.RecentPlans as List<Plan> ?? new List<Plan>();
+}
+
+<div class="page-head">
+    <div>
+        <h1>Operations Control Center</h1>
+        <p>Welcome back, @User.Identity?.Name. Here is a quick look at your communication system.</p>
+    </div>
+    <div class="actions">
+        <a asp-action="AddPlan" class="btn btn-outline"><span class="material-symbols-outlined">add_circle</span> New Plan</a>
+        <a asp-action="AddEmployee" class="btn btn-primary"><span class="material-symbols-outlined">person_add</span> Add Employee</a>
+    </div>
+</div>
+
+<div class="nx-kpis">
+    <a class="nx-kpi" asp-action="Employees">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Employees</span><span class="nx-kpi-ico"><span class="material-symbols-outlined">groups</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.EmployeeCount</div>
+        <div class="nx-kpi-note"><span class="dot blue"></span> Staff &amp; technicians</div>
+    </a>
+    <a class="nx-kpi" asp-action="RetailShops">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Retail shops</span><span class="nx-kpi-ico cyan"><span class="material-symbols-outlined">storefront</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.ShopCount</div>
+        <div class="nx-kpi-note"><span class="dot"></span> Outlets &amp; franchise</div>
+    </a>
+    <a class="nx-kpi" asp-action="Vendors">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Vendors</span><span class="nx-kpi-ico purple"><span class="material-symbols-outlined">local_shipping</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.VendorCount</div>
+        <div class="nx-kpi-note"><span class="dot purple"></span> Equipment suppliers</div>
+    </a>
+    <a class="nx-kpi" asp-action="Plans">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Plans</span><span class="nx-kpi-ico green"><span class="material-symbols-outlined">list_alt</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.PlanCount</div>
+        <div class="nx-kpi-note"><span class="dot"></span> @ViewBag.ActivePlans active</div>
+    </a>
+    <a class="nx-kpi" asp-action="Equipment">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Equipment units</span><span class="nx-kpi-ico amber"><span class="material-symbols-outlined">router</span></span></div>
+        <div class="nx-kpi-value">@ViewBag.EquipmentCount</div>
+        <div class="nx-kpi-note"><span class="dot amber"></span> In inventory</div>
+    </a>
+</div>
+
+<div class="nx-split">
+    <div class="nx-stack">
+        <div class="card nx-card-flush">
+            <div class="card-head">
+                <div><h3>Broadband &amp; Leased Line Plans</h3><p class="muted" style="margin:2px 0 0;font-size:.75rem">Latest catalog offerings</p></div>
+                <a asp-action="AddPlan" class="btn btn-sm btn-primary">+ Add</a>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Plan</th><th>Type</th><th style="text-align:right">Price</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in plans)
+                    {
+                        <tr><td><strong>@item.PlanName</strong></td><td>@item.PlanType</td><td style="text-align:right">@item.Price.ToString("N0")</td></tr>
+                    }
+                    @if (!plans.Any())
+                    {
+                        <tr><td colspan="3" class="empty">No plans yet. Create your first plan.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="nx-stack">
+        <div class="nx-action-card">
+            <div class="nx-eyebrow">NOC Administration</div>
+            <h3>Add Staff &amp; Assign Role</h3>
+            <p>Quickly provision technicians, billing operators and other employees.</p>
+            <a asp-action="AddEmployee" class="btn btn-primary btn-block" style="margin-top:8px">Configure Access <span class="material-symbols-outlined">arrow_forward</span></a>
+        </div>
+
+        <div class="card nx-card-flush">
+            <div class="card-head"><h3>Employee Roster</h3><a asp-action="Employees" class="btn btn-sm btn-outline">View all</a></div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Name</th><th>Designation</th><th>Joined</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in employees)
+                    {
+                        <tr><td>@item.FullName</td><td>@item.Designation</td><td>@item.JoinDate.ToString("dd MMM yyyy")</td></tr>
+                    }
+                    @if (!employees.Any())
+                    {
+                        <tr><td colspan="3" class="empty">No employees yet. Add your first employee.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

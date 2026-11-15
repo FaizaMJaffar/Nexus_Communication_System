@@ -1,0 +1,75 @@
+@model List<Feasibility>
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Active"] = "Dashboard";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / <span class="current">Dashboard</span></div>
+        <h1 class="tx-page-title">Technical Dashboard</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-primary" asp-action="Orders">View Work Orders</a>
+    </div>
+</div>
+
+<div class="tx-stats">
+    <div class="tx-stat">
+        <div class="tx-stat-top"><div class="tx-stat-label">Pending Feasibility</div><span class="tx-stat-ico "><span class="material-symbols-outlined">travel_explore</span></span></div>
+        <div class="tx-stat-value">@ViewBag.PendingFeasibility</div>
+        <div class="tx-stat-note">Awaiting site survey</div>
+    </div>
+    <div class="tx-stat">
+        <div class="tx-stat-top"><div class="tx-stat-label">Awaiting Splicing</div><span class="tx-stat-ico amber"><span class="material-symbols-outlined">content_cut</span></span></div>
+        <div class="tx-stat-value">@ViewBag.AwaitingSplicing</div>
+        <div class="tx-stat-note">Connections pending setup</div>
+    </div>
+    <div class="tx-stat">
+        <div class="tx-stat-top"><div class="tx-stat-label">Active Connections</div><span class="tx-stat-ico green"><span class="material-symbols-outlined">bolt</span></span></div>
+        <div class="tx-stat-value">@ViewBag.ActiveConnections</div>
+        <div class="tx-stat-note">Currently live</div>
+    </div>
+    <div class="tx-stat">
+        <div class="tx-stat-top"><div class="tx-stat-label">Inactive Connections (temp. + perm.)</div><span class="tx-stat-ico red"><span class="material-symbols-outlined">power_off</span></span></div>
+        <div class="tx-stat-value">@ViewBag.InactiveConnections</div>
+        <div class="tx-stat-note">Deactivated</div>
+    </div>
+</div>
+
+<div class="tx-card">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Recent Feasibility Checks</h2>
+    </div>
+    <div class="tx-table-wrap">
+        <table class="tx-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Landline</th>
+                    <th>Internet</th>
+                    <th>Server</th>
+                    <th>Status</th>
+                    <th>Checked Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="6" class="tx-muted">No feasibility checks recorded yet.</td></tr>
+                }
+                @foreach (var f in Model)
+                {
+                    <tr>
+                        <td><span class="tx-wo">WO-@f.OrderId</span></td>
+                        <td>@(f.LandlineAvailable == null ? "-" : f.LandlineAvailable == true ? "Yes" : "No")</td>
+                        <td>@(f.InternetAvailable == null ? "-" : f.InternetAvailable == true ? "Yes" : "No")</td>
+                        <td>@(f.ServerAvailable ? "Yes" : "No")</td>
+                        <td><span class="tx-badge tx-badge-@f.Status.ToLower()">@f.Status</span></td>
+                        <td>@f.CheckedDate.ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

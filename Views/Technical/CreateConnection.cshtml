@@ -1,0 +1,48 @@
+@model CreateConnectionViewModel
+@{
+    ViewData["Title"] = "New Connection";
+    ViewData["Active"] = "Connections";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Connections & Circuits / <span class="current">New Connection</span></div>
+        <h1 class="tx-page-title">Create Connection</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="Connections">Back to Connections</a>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Connection Details</h2>
+    </div>
+
+    <form asp-action="CreateConnection" method="post">
+        <div class="tx-card-body">
+
+            <div asp-validation-summary="ModelOnly" class="tx-alert tx-alert-error"></div>
+
+            <div class="tx-form-group">
+                <label asp-for="OrderId" class="tx-label">Work Order (feasible orders only)</label>
+                <select asp-for="OrderId" class="tx-select" asp-items="@((List<SelectListItem>)ViewBag.Orders)">
+                    <option value="">-- Select work order --</option>
+                </select>
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+                <p class="tx-muted">Customer, plan, address and charges are taken from the order automatically.</p>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="Remarks" class="tx-label">Remarks</label>
+                <textarea asp-for="Remarks" class="tx-textarea" placeholder="Notes (optional)"></textarea>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-primary">Create Connection</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="Connections">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

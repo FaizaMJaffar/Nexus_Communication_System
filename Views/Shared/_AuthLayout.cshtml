@@ -1,0 +1,85 @@
+@{
+    string portal = ViewData["PortalKey"] as string ?? "Customer";
+    string title = ViewData["PortalTitle"] as string ?? "Nexus Portal";
+    string lede = ViewData["PortalLede"] as string ?? "Enterprise telecom and subscriber management suite.";
+    bool wide = ViewData["Wide"] as bool? ?? false;
+    bool switcher = ViewData["ShowSwitcher"] as bool? ?? true;
+
+    var portals = new[]
+    {
+        new { Key = "Admin",     Name = "Admin Operations",  Sub = "/Admin/Login",     Icon = "shield" },
+        new { Key = "Customer",  Name = "Customer Self-Care", Sub = "/Customer/Login",  Icon = "person" },
+        new { Key = "Technical", Name = "Field Ops & Technical", Sub = "/Technical/Login", Icon = "construction" },
+        new { Key = "Accounts",  Name = "Accounts & Billing", Sub = "/Accounts/Login",  Icon = "receipt_long" }
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Communication System</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/admin/logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/nexus-base.css" asp-append-version="true" />
+</head>
+<body class="portal-auth portal-@portal.ToLower()">
+<div class="nx-auth">
+    <aside class="nx-auth-left">
+        <a class="nx-auth-brand" asp-controller="Home" asp-action="Index">
+            <span class="material-symbols-outlined">hub</span>
+            Nexus Telecom
+            <em>GATEWAY</em>
+        </a>
+
+        <span class="nx-auth-status"><i></i> Secure sign-in &middot; all systems operational</span>
+        <h1>@title</h1>
+        <p class="lede">@lede</p>
+
+        <div class="nx-auth-links">
+            <h4>Switch portal</h4>
+            @foreach (var p in portals)
+            {
+                <a class="nx-auth-link @(p.Key == portal ? "current" : "")" asp-controller="@p.Key" asp-action="Login">
+                    <span class="material-symbols-outlined">@p.Icon</span>
+                    <span><b>@p.Name</b><small>@p.Sub</small></span>
+                </a>
+            }
+            <div class="nx-auth-badges">
+                <span><span class="material-symbols-outlined">verified_user</span> ISO 27001</span>
+                <span><span class="material-symbols-outlined">shield</span> SOC-2 Type II</span>
+                <span><span class="material-symbols-outlined">lock</span> TLS 1.3</span>
+            </div>
+        </div>
+    </aside>
+
+    <section class="nx-auth-right">
+        <div class="nx-auth-topbar">
+            <a asp-controller="Home" asp-action="Index">&larr; Back to home</a>
+        </div>
+
+        <div class="nx-auth-main">
+            <div class="nx-auth-box @(wide ? "wide" : "")">
+                @if (switcher)
+                {
+                    <div class="nx-auth-product"><span class="material-symbols-outlined">cell_tower</span> Nexus Communication System</div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+
+        <div class="nx-auth-foot">
+            <span>&copy; @DateTime.Now.Year Nexus Communication System. All rights reserved.</span>
+            <span><a asp-controller="Home" asp-action="Index">Portals</a></span>
+        </div>
+    </section>
+</div>
+<script src="~/js/nexus.js" asp-append-version="true"></script>
+@if (portal == "Customer")
+{
+    <script src="~/js/customer.js" asp-append-version="true"></script>
+}
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

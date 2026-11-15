@@ -1,0 +1,49 @@
+@model List<Connection>
+@{
+    ViewData["Title"] = "My Connections";
+}
+
+<div class="page-header">
+    <div>
+        <h1>My Connections</h1>
+        <p>All your connections and their status</p>
+    </div>
+    <a class="btn" asp-action="ApplyConnection">+ New Connection</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="empty">
+            <span class="big">📡</span>
+            You do not have any connections yet.
+            <div class="mt"><a class="btn btn-sm" asp-action="ApplyConnection">Apply for a connection</a></div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="grid grid-3">
+        @foreach (var c in Model)
+        {
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <span style="font-size:30px">@(PlanCatalog.Icons.ContainsKey(c.ConnectionType) ? PlanCatalog.Icons[c.ConnectionType] : "📡")</span>
+                    <span class="badge b-@c.StatusCss">@c.Status</span>
+                </div>
+                <h3 style="margin-bottom:2px">@c.ConnectionType</h3>
+                <p class="muted" style="margin-bottom:12px">@c.ConnectionNumber</p>
+                <ul class="detail-list">
+                    <li><span class="k">Plan</span><span class="v">@c.PlanName (@c.Speed)</span></li>
+                    <li><span class="k">Monthly</span><span class="v">$@c.MonthlyCharges.ToString("N0")</span></li>
+                    <li><span class="k">Address</span><span class="v">@c.InstallAddress, @c.City</span></li>
+                    <li><span class="k">Applied</span><span class="v">@c.CreatedAt.ToString("dd MMM yyyy")</span></li>
+                    @if (c.ActivatedAt.HasValue)
+                    {
+                        <li><span class="k">Activated</span><span class="v">@c.ActivatedAt.Value.ToString("dd MMM yyyy")</span></li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+}

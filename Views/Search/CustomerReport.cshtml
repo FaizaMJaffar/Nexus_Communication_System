@@ -1,0 +1,59 @@
+@model NexusCommunicationSystem.Models.CustomerReportViewModel
+@{
+    ViewData["Title"] = "Customer Report";
+    ViewData["Active"] = "Reports";
+    ViewData["Tab"] = "CustomerReport";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Customer Report</h1>
+        <p>Customers with how many orders and connections each one has.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="CustomerReport" class="nx-filter" data-search data-clean="true">
+        <div class="form-group"><label for="fromDate">From date</label><input type="date" id="fromDate" name="fromDate" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group"><label for="toDate">To date</label><input type="date" id="toDate" name="toDate" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">filter_alt</span> Generate</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+<div class="nx-kpis">
+    <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">Customers</span></div><div class="nx-kpi-value">@Model.Rows.Count</div></div>
+    <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">Total orders</span></div><div class="nx-kpi-value">@Model.Rows.Sum(r => r.OrderCount)</div></div>
+    <div class="nx-kpi"><div class="nx-kpi-top"><span class="nx-kpi-label">Total connections</span></div><div class="nx-kpi-value">@Model.Rows.Sum(r => r.ConnectionCount)</div></div>
+</div>
+
+<div class="card">
+<div class="toolbar">
+    <input type="text" id="quickFilter" class="form-control" style="max-width:300px" placeholder="Quick filter this table..." />
+    <div class="actions no-print">
+        <a href="#" data-action="export-csv" data-filename="customer-report" class="btn btn-outline btn-sm"><span class="material-symbols-outlined">download</span> Export CSV</a>
+        <a href="#" data-action="print" class="btn btn-outline btn-sm"><span class="material-symbols-outlined">print</span> Print</a>
+    </div>
+</div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Joined</th><th style="text-align:right">Orders</th><th style="text-align:right">Connections</th></tr></thead>
+            <tbody>
+            @foreach (var r in Model.Rows)
+            {
+                <tr><td>@r.CustomerId</td><td><strong>@r.FullName</strong></td><td>@r.Email</td><td>@r.Phone</td><td>@r.City</td><td>@r.CreatedAt.ToString("dd MMM yyyy")</td><td style="text-align:right">@r.OrderCount</td><td style="text-align:right">@r.ConnectionCount</td></tr>
+            }
+            @if (!Model.Rows.Any())
+            {
+                <tr><td colspan="8" class="empty">No customers in this period.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/js/search.js" asp-append-version="true"></script>

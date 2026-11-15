@@ -1,0 +1,67 @@
+@model Plan
+@{
+    ViewData["Title"] = "Edit Plan";
+    ViewData["Active"] = "Plans";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Edit Plan</h1>
+        <p>Update the details below and save.</p>
+    </div>
+    <a asp-action="Plans" class="btn btn-outline">Back to list</a>
+</div>
+
+<div class="card">
+<form asp-action="EditPlan" method="post" class="form-grid">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="PlanName">Plan Name <span class="req">*</span></label>
+        <input asp-for="PlanName" type="text" class="form-control" required />
+        <span asp-validation-for="PlanName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PlanType">Plan Type <span class="req">*</span></label>
+        <select asp-for="PlanType" class="form-control" required><option value="Postpaid">Postpaid</option></select>
+        <span asp-validation-for="PlanType" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConnectionType">Connection Type <span class="req">*</span></label>
+        <select asp-for="ConnectionType" asp-items="@(new SelectList(PlanCatalog.Types))" class="form-control" required><option value="">-- Select --</option></select>
+        <span asp-validation-for="ConnectionType" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Speed">Speed / Allowance</label>
+        <input asp-for="Speed" type="text" class="form-control" placeholder="e.g. 50 Mbps, 500 Mins, 30 GB" />
+        <span asp-validation-for="Speed" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Price <span class="req">*</span></label>
+        <input asp-for="Price" type="number" class="form-control" step="0.01" min="0" required />
+        <span asp-validation-for="Price" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DataGB">Data (GB) <span class="req">*</span></label>
+        <input asp-for="DataGB" type="number" class="form-control" min="0" required />
+        <span asp-validation-for="DataGB" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ValidityDays">Validity (Days) <span class="req">*</span></label>
+        <input asp-for="ValidityDays" type="number" class="form-control" min="0" required />
+        <span asp-validation-for="ValidityDays" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label class="check-row"><input asp-for="IsActive" type="checkbox" /> Active</label>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a asp-action="Plans" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

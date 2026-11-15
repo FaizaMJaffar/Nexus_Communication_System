@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Generate Bill";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Generate Bill</h1>
+        <p>The bill is calculated automatically from the connection's plan, equipment, security deposit, bulk discount and 12.24% service tax.</p>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form asp-action="GenerateBill" method="post">
+    <div class="mb-3">
+        <label>Customer Id</label>
+        <input type="number" name="customerId" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Connection Id</label>
+        <input type="number" name="connectionId" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Billing Month</label>
+        <input type="text" name="billingMonth" class="form-control" placeholder="October 2026" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Bill</button>
+</form>

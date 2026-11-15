@@ -1,0 +1,66 @@
+@model NexusCommunicationSystem.Models.OrderSearchViewModel
+@{
+    ViewData["Title"] = "Search Order";
+    ViewData["Active"] = "Search";
+    ViewData["Tab"] = "SearchOrder";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Search Order</h1>
+        <p>Find orders by order number, customer, status or date.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="SearchOrder" class="nx-filter" data-search data-clean="true">
+        <div class="form-group"><label for="OrderNumber">Order ID</label><input type="text" id="OrderNumber" name="OrderNumber" value="@Model.OrderNumber" placeholder="e.g. D0000000001" /></div>
+        <div class="form-group"><label for="CustomerName">Customer name</label><input type="text" id="CustomerName" name="CustomerName" value="@Model.CustomerName" /></div>
+        <div class="form-group"><label for="Status">Status</label>
+            <select id="Status" name="Status">
+                <option value="">All</option>@foreach (var s in new[] { "Processing", "Completed", "Rejected" }) { <option value="@s" selected="@(Model.Status == s)">@s</option> }
+            </select></div>
+        <div class="form-group"><label for="FromDate">From date</label><input type="date" id="FromDate" name="FromDate" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group"><label for="ToDate">To date</label><input type="date" id="ToDate" name="ToDate" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Search</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    @if (Model.Results.Any())
+    {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Orders</h3><span class="count-chip">@Model.Results.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th><th style="text-align:right">Amount ($)</th></tr></thead>
+        <tbody>
+        @foreach (var o in Model.Results)
+        {
+            <tr>
+                <td><a asp-action="OrderStatus" asp-route-orderNumber="@o.OrderNumber" class="mono">@o.OrderNumber</a></td>
+                <td>@o.Customer?.FullName</td>
+                <td>@o.ConnectionType - @o.PlanName</td>
+                <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                <td><span class="badge b-@((o.Status ?? "").ToLower())">@o.Status</span></td>
+                <td style="text-align:right">@o.TotalAmount.ToString("N0")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+    }
+    else
+    {
+        <div class="card empty">No orders match these filters.</div>
+    }
+}
+
+<script src="~/js/search.js" asp-append-version="true"></script>

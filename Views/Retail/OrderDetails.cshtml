@@ -1,0 +1,90 @@
+@model Order
+@{
+    ViewData["Title"] = "Order " + Model.OrderNumber;
+    ViewData["Active"] = "Orders";
+    var bills = ViewBag.Bills as List<Bill> ?? new List<Bill>();
+    var feas = Model.Feasibilities?.OrderByDescending(f => f.FeasibilityId).FirstOrDefault();
+    string Badge(string s) => s switch
+    {
+        "Completed" or "Feasible" or "Paid" or "Active" => "badge-green",
+        "Rejected" or "Permanently Inactive" => "badge-red",
+        "Processing" or "Pending" or "Unpaid" or "Partial" => "badge-blue",
+        _ => "badge-purple"
+    };
+}
+
+<div class="page-head">
+    <div>
+        <h1>Order @Model.OrderNumber</h1>
+        <p>Placed on @Model.OrderDate.ToString("dd MMM yyyy HH:mm") by @(Model.PlacedByEmployee?.FullName ?? "-")</p>
+    </div>
+    <a asp-action="Orders" class="btn btn-outline">Back to orders</a>
+</div>
+
+<div class="grid grid-2">
+    <div class="card">
+        <h3>Order</h3>
+        <table class="table">
+            <tr><th>Order ID</th><td>@Model.OrderNumber</td></tr>
+            <tr><th>Customer</th><td>@Model.Customer?.FullName (@Model.Customer?.Phone)</td></tr>
+            <tr><th>Connection type</th><td>@Model.ConnectionType</td></tr>
+            <tr><th>Plan</th><td>@Model.PlanName (@Model.Speed)</td></tr>
+            <tr><th>Installation address</th><td>@Model.InstallAddress, @Model.City</td></tr>
+            <tr><th>Monthly charges</th><td>$@Model.MonthlyCharges.ToString("N2")</td></tr>
+            <tr><th>Security deposit</th><td>$@Model.SecurityDeposit.ToString("N2")</td></tr>
+            <tr><th>Service tax (12.24%)</th><td>$@Model.ServiceTax.ToString("N2")</td></tr>
+            <tr><th>Total (first bill)</th><td>$@Model.TotalAmount.ToString("N2")</td></tr>
+            <tr><th>Payment method</th><td>@Model.PaymentMethod</td></tr>
+            <tr><th>Payment</th><td><span class="badge @Badge(Model.PaymentStatus)">@Model.PaymentStatus</span></td></tr>
+            <tr><th>Order status</th><td><span class="badge @Badge(Model.Status)">@Model.Status</span></td></tr>
+        </table>
+        @if (Model.PaymentStatus == "Unpaid" && Model.Status != "Rejected")
+        {
+            <form asp-action="ReceiveOrderPayment" asp-route-id="@Model.Id" method="post" class="mt">
+                <button type="submit" class="btn btn-primary">Receive payment of $@Model.TotalAmount.ToString("N2")</button>
+            </form>
+        }
+    </div>
+
+    <div class="card">
+        <h3>Feasibility &amp; connection</h3>
+        <table class="table">
+            <tr><th>Feasibility</th><td><span class="badge @Badge(feas?.Status ?? "Pending")">@(feas?.Status ?? "Pending")</span></td></tr>
+            <tr><th>Checked by</th><td>@(feas?.CheckedBy ?? "-")</td></tr>
+            <tr><th>Checked on</th><td>@(feas != null ? feas.CheckedDate.ToString("dd MMM yyyy") : "-")</td></tr>
+            <tr><th>Remarks</th><td>@(string.IsNullOrWhiteSpace(feas?.Remarks) ? "-" : feas.Remarks)</td></tr>
+            <tr><th>Account ID</th><td>@(Model.Connection?.ConnectionNumber ?? "Not created yet")</td></tr>
+            <tr><th>Connection status</th><td>@if (Model.Connection != null) { <span class="badge @Badge(Model.Connection.Status)">@Model.Connection.Status</span> } else { <span>-</span> }</td></tr>
+            <tr><th>Activated on</th><td>@(Model.Connection?.ActivatedAt != null ? Model.Connection.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Bills of this connection</h3>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Bill #</th><th>Month</th><th>Bill date</th><th>Due date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
+            <tbody>
+            @foreach (var b in bills)
+            {
+                var paid = b.Payments.Sum(p => p.AmountPaid);
+                <tr>
+                    <td>@b.BillId</td>
+                    <td>@b.BillingMonth</td>
+                    <td>@b.BillDate.ToString("dd MMM yyyy")</td>
+                    <td>@b.DueDate.ToString("dd MMM yyyy")</td>
+                    <td>$@b.TotalAmount.ToString("N2")</td>
+                    <td>$@paid.ToString("N2")</td>
+                    <td>$@((b.TotalAmount - paid).ToString("N2"))</td>
+                    <td><span class="badge @Badge(b.Status)">@b.Status</span></td>
+                </tr>
+            }
+            @if (!bills.Any())
+            {
+                <tr><td colspan="8" class="empty">No bill yet. Accounts generates bills after the connection is created.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

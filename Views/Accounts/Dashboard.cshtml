@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    int total = Convert.ToInt32(ViewBag.TotalBills ?? 0);
+    int paid = Convert.ToInt32(ViewBag.PaidBills ?? 0);
+    int unpaid = Convert.ToInt32(ViewBag.UnpaidBills ?? 0);
+    int partial = Convert.ToInt32(ViewBag.PartialBills ?? 0);
+    int overdue = Convert.ToInt32(ViewBag.OverdueBills ?? 0);
+    decimal collected = Convert.ToDecimal(ViewBag.TotalCollected ?? 0m);
+    double pct(int n) => total == 0 ? 0 : Math.Round(n * 100.0 / total, 1);
+}
+
+<div class="page-head">
+    <div>
+        <h1>Accounts &amp; Billing Overview</h1>
+        <p>Bills, collections and overdue accounts at a glance.</p>
+    </div>
+    <div class="actions">
+        <a asp-action="DuePayments" class="btn btn-outline"><span class="material-symbols-outlined">event_busy</span> Due Payments</a>
+        <a asp-action="GenerateBill" class="btn btn-primary"><span class="material-symbols-outlined">receipt_long</span> Generate Bill</a>
+    </div>
+</div>
+
+<div class="nx-kpis">
+    <a class="nx-kpi" asp-action="BillHistory">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Total bills</span><span class="nx-kpi-ico cyan"><span class="material-symbols-outlined">receipt_long</span></span></div>
+        <div class="nx-kpi-value">@total</div>
+        <div class="nx-kpi-note"><span class="dot blue"></span> All generated bills</div>
+    </a>
+    <a class="nx-kpi" asp-action="BillHistory">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Paid bills</span><span class="nx-kpi-ico green"><span class="material-symbols-outlined">check_circle</span></span></div>
+        <div class="nx-kpi-value">@paid</div>
+        <div class="nx-kpi-note"><span class="dot"></span> @pct(paid)% of all bills</div>
+    </a>
+    <a class="nx-kpi" asp-action="DuePayments">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Unpaid bills</span><span class="nx-kpi-ico red"><span class="material-symbols-outlined">pending_actions</span></span></div>
+        <div class="nx-kpi-value">@unpaid</div>
+        <div class="nx-kpi-note"><span class="dot red"></span> @pct(unpaid)% of all bills</div>
+    </a>
+    <a class="nx-kpi" asp-action="DuePayments">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Partial bills</span><span class="nx-kpi-ico amber"><span class="material-symbols-outlined">timelapse</span></span></div>
+        <div class="nx-kpi-value">@partial</div>
+        <div class="nx-kpi-note"><span class="dot amber"></span> @pct(partial)% of all bills</div>
+    </a>
+    <a class="nx-kpi" asp-action="DuePayments">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Overdue bills</span><span class="nx-kpi-ico purple"><span class="material-symbols-outlined">event_busy</span></span></div>
+        <div class="nx-kpi-value">@overdue</div>
+        <div class="nx-kpi-note"><span class="dot purple"></span> Past due date, not paid</div>
+    </a>
+    <a class="nx-kpi" asp-action="Payments">
+        <div class="nx-kpi-top"><span class="nx-kpi-label">Total collected</span><span class="nx-kpi-ico"><span class="material-symbols-outlined">payments</span></span></div>
+        <div class="nx-kpi-value"><small>$</small> @collected.ToString("N0")</div>
+        <div class="nx-kpi-note"><span class="dot blue"></span> Sum of all payments</div>
+    </a>
+</div>
+
+<div class="nx-split">
+    <div class="card">
+        <div class="card-head"><h3>Collection status</h3><span class="count-chip">@total bill(s)</span></div>
+        @if (total == 0)
+        {
+            <p class="muted">No bills have been generated yet.</p>
+        }
+        else
+        {
+            <div class="nx-bar">
+                <i style="width:@(pct(paid))%; background:var(--nx-green)"></i>
+                <i style="width:@(pct(partial))%; background:var(--nx-amber)"></i>
+                <i style="width:@(pct(unpaid))%; background:var(--nx-red)"></i>
+            </div>
+            <div class="nx-legend">
+                <span style="--c:var(--nx-green)">Paid @paid</span>
+                <span style="--c:var(--nx-amber)">Partial @partial</span>
+                <span style="--c:var(--nx-red)">Unpaid @unpaid</span>
+            </div>
+        }
+    </div>
+
+    <div class="nx-stack">
+        <div class="nx-action-card">
+            <div class="nx-eyebrow">Quick action</div>
+            <h3>Record a payment</h3>
+            <p>Add a payment against a bill and update its status instantly.</p>
+            <a asp-action="AddPayment" class="btn btn-primary btn-block" style="margin-top:8px">Add Payment <span class="material-symbols-outlined">arrow_forward</span></a>
+        </div>
+    </div>
+</div>
+
+<div class="nx-quick" style="margin-top:16px">
+    <a asp-action="CalculateCharges"><span class="ico"><span class="material-symbols-outlined">calculate</span></span><span><b>Add charges</b><small>Installation, extras</small></span></a>
+    <a asp-action="ApplyDiscount"><span class="ico"><span class="material-symbols-outlined">percent</span></span><span><b>Apply discount</b><small>Bulk-discount slabs</small></span></a>
+    <a asp-action="SecurityDeposit"><span class="ico"><span class="material-symbols-outlined">savings</span></span><span><b>Security deposit</b><small>Record a deposit</small></span></a>
+    <a asp-action="Customers"><span class="ico"><span class="material-symbols-outlined">group</span></span><span><b>Customers</b><small>Look up ids</small></span></a>
+</div>

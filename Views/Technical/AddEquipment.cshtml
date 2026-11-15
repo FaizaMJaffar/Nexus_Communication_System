@@ -1,0 +1,82 @@
+@model Equipment
+@{
+    ViewData["Title"] = "Add Equipment";
+    ViewData["Active"] = "Equipment";
+}
+
+<div class="tx-page-head">
+    <div>
+        <div class="tx-breadcrumb">Operations / Equipment Provisioning / <span class="current">Add Equipment</span></div>
+        <h1 class="tx-page-title">Add Equipment</h1>
+    </div>
+    <div class="tx-head-actions">
+        <a class="tx-btn tx-btn-secondary" asp-action="Equipment">Back to Equipment</a>
+    </div>
+</div>
+
+<div class="tx-card" style="max-width: 640px;">
+    <div class="tx-card-head">
+        <h2 class="tx-card-title">Equipment Details</h2>
+    </div>
+
+    <form asp-action="AddEquipment" method="post">
+        <div class="tx-card-body">
+
+            <div asp-validation-summary="ModelOnly" class="tx-alert tx-alert-error"></div>
+
+            <div class="tx-form-group">
+                <label asp-for="EquipmentName" class="tx-label"></label>
+                <input asp-for="EquipmentName" class="tx-input" placeholder="e.g. Huawei HG8145V5" />
+                <span asp-validation-for="EquipmentName" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="SerialNumber" class="tx-label"></label>
+                <input asp-for="SerialNumber" class="tx-input" placeholder="e.g. SN-48392011" />
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="EquipmentType" class="tx-label"></label>
+                <select asp-for="EquipmentType" class="tx-select">
+                    <option value="">-- Select category --</option>
+                    <option value="ONT">ONT</option>
+                    <option value="Router">Router</option>
+                    <option value="Splitter">Splitter</option>
+                    <option value="Switch">Switch</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="EquipmentType" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="Quantity" class="tx-label"></label>
+                <input asp-for="Quantity" type="number" min="0" class="tx-input" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="UnitPrice" class="tx-label"></label>
+                <input asp-for="UnitPrice" type="number" step="0.01" min="0" class="tx-input" />
+                <span asp-validation-for="UnitPrice" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="Location" class="tx-label"></label>
+                <input asp-for="Location" class="tx-input" placeholder="e.g. Main warehouse" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-group">
+                <label asp-for="PurchaseDate" class="tx-label"></label>
+                <input asp-for="PurchaseDate" class="tx-input" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+
+            <div class="tx-form-actions">
+                <button type="submit" class="tx-btn tx-btn-primary">Add Equipment</button>
+                <a class="tx-btn tx-btn-secondary" asp-action="Equipment">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

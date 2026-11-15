@@ -1,0 +1,77 @@
+@model EditProfileViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Profile</h1>
+        <p>Update your personal information</p>
+    </div>
+</div>
+
+<form asp-action="EditProfile" method="post" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="card mb">
+        <h3>Personal Information</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" type="text" />
+                <span asp-validation-for="FullName" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="email" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone"></label>
+                <input asp-for="Phone" type="tel" />
+                <span asp-validation-for="Phone" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" type="text" list="cityList" />
+                <datalist id="cityList">
+                    @foreach (var c in PlanCatalog.Cities)
+                    {
+                        <option value="@c"></option>
+                    }
+                </datalist>
+                <span asp-validation-for="City" class="field-error"></span>
+            </div>
+            <div class="form-group full">
+                <label asp-for="Address"></label>
+                <textarea asp-for="Address" rows="3" style="min-height:90px"></textarea>
+                <span asp-validation-for="Address" class="field-error"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb">
+        <h3>Change Password <span class="muted" style="font-size:13px;font-weight:400">(optional - leave blank to keep your current password)</span></h3>
+        <div class="form-grid">
+            <div class="form-group full">
+                <label asp-for="CurrentPassword"></label>
+                <input asp-for="CurrentPassword" />
+                <span asp-validation-for="CurrentPassword" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewPassword"></label>
+                <input asp-for="NewPassword" />
+                <span asp-validation-for="NewPassword" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmNewPassword"></label>
+                <input asp-for="ConfirmNewPassword" />
+                <span asp-validation-for="ConfirmNewPassword" class="field-error"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button type="submit" class="btn">💾 Save Changes</button>
+        <a class="btn btn-outline" asp-action="Profile">Cancel</a>
+    </div>
+</form>

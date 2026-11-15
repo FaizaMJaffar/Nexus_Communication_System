@@ -1,0 +1,57 @@
+@model List<Connection>
+@{
+    ViewData["Title"] = "Connections";
+    ViewData["Active"] = "Connections";
+    string Badge(string s) => s switch
+    {
+        "Active" => "badge-green",
+        "Permanently Inactive" => "badge-red",
+        "Pending" => "badge-blue",
+        _ => "badge-purple"
+    };
+}
+
+<div class="page-head">
+    <div>
+        <h1>Connections</h1>
+        <p>Connections created by the Technical team for your outlet's orders.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Connections" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Account ID, customer, plan or status..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="Connections" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Account ID</th><th>Order ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>Monthly</th><th>Status</th><th>Activated</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.ConnectionNumber</td>
+                    <td>@(c.Order?.OrderNumber ?? "-")</td>
+                    <td>@(c.Customer?.FullName ?? "-")</td>
+                    <td>@c.ConnectionType</td>
+                    <td>@c.PlanName</td>
+                    <td>$@c.MonthlyCharges.ToString("N2")</td>
+                    <td><span class="badge @Badge(c.Status)">@c.Status</span></td>
+                    <td>@(c.ActivatedAt.HasValue ? c.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="empty">No connection yet.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

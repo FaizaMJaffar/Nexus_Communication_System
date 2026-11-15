@@ -1,0 +1,50 @@
+@model RetailPaymentViewModel
+@{
+    ViewData["Title"] = "Record Payment";
+    ViewData["Active"] = "Payments";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Record Payment</h1>
+        <p>The customer paid a bill at your outlet. Pick the bill and enter the amount received.</p>
+    </div>
+    <a asp-action="Payments" class="btn btn-outline">Back to payments</a>
+</div>
+
+<div class="card">
+<form asp-action="AddPayment" method="post" class="form-grid" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <div class="form-group form-full">
+        <label asp-for="BillId">Bill <span class="req">*</span></label>
+        <select asp-for="BillId" class="form-control" asp-items="@((List<SelectListItem>)ViewBag.Bills)">
+            <option value="">-- Select bill --</option>
+        </select>
+        <span asp-validation-for="BillId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AmountPaid">Amount Received ($) <span class="req">*</span></label>
+        <input asp-for="AmountPaid" type="number" step="0.01" min="0.01" class="form-control" />
+        <span asp-validation-for="AmountPaid" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PaymentMethod">Payment Method <span class="req">*</span></label>
+        <select asp-for="PaymentMethod" class="form-control">
+            @foreach (var m in RetailPaymentViewModel.Methods)
+            {
+                <option value="@m">@m</option>
+            }
+        </select>
+        <span asp-validation-for="PaymentMethod" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label asp-for="ReferenceNo">Reference No</label>
+        <input asp-for="ReferenceNo" type="text" class="form-control" placeholder="Receipt or transaction number (optional)" />
+        <span asp-validation-for="ReferenceNo" class="field-error"></span>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Save payment</button>
+        <a asp-action="Payments" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

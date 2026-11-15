@@ -1,0 +1,57 @@
+@model List<Equipment>
+@{
+    ViewData["Title"] = "Equipment";
+    ViewData["Active"] = "Equipment";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Equipment</h1>
+        <p>Manage routers, towers, SIM stock and other equipment.</p>
+    </div>
+    <a asp-action="AddEquipment" class="btn btn-primary">+ Add equipment</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Equipment" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Search..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string))
+            {
+                <a asp-action="Equipment" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>#</th><th>Equipment Name</th><th>Equipment Type</th><th>Serial Number</th><th>Quantity</th><th>Unit Price</th><th>Status</th><th>Vendor</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.EquipmentName</td>
+                    <td>@item.EquipmentType</td>
+                    <td>@item.SerialNumber</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("N0")</td>
+                    <td><span class="badge badge-blue">@item.Status</span></td>
+                    <td>@(item.Vendor != null ? item.Vendor.VendorName : "-")</td>
+                    <td class="actions">
+                        <a asp-action="EditEquipment" asp-route-id="@item.Id" class="btn btn-sm btn-outline">Edit</a>
+                        <form asp-action="DeleteEquipment" asp-route-id="@item.Id" method="post" class="inline" data-confirm="Delete this equipment? This cannot be undone.">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="9" class="empty">Nothing here yet. Use the add button to create a record.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

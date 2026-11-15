@@ -1,0 +1,13 @@
+@model StatusLookupViewModel
+@{
+    ViewData["Title"] = "Track Status";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Track Status</h1>
+        <p>Enter your Order ID or Account ID to see the status, amount due and contact number.</p>
+    </div>
+</div>
+
+<partial name="_StatusLookup" model="Model" />

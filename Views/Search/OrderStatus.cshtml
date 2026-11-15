@@ -1,0 +1,64 @@
+@model NexusCommunicationSystem.Models.OrderStatusViewModel
+@{
+    ViewData["Title"] = "Order Status";
+    ViewData["Active"] = "Reports";
+    ViewData["Tab"] = "OrderStatus";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Order Status</h1>
+        <p>Look up one order and see how all orders are spread across statuses.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="OrderStatus" class="nx-filter" data-search>
+        <div class="form-group" style="grid-column: span 2"><label for="orderNumber">Order ID</label><input type="text" id="orderNumber" name="orderNumber" value="@Model.OrderNumber" placeholder="Enter the order number" autofocus /></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Check</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    @if (Model.Order == null)
+    {
+        <div class="card empty mb">No order found with that number.</div>
+    }
+    else
+    {
+        <div class="card mb">
+            <div class="card-head"><h3>Order <span class="mono">@Model.Order.OrderNumber</span></h3><span class="badge b-@((Model.Order.Status ?? "").ToLower())">@Model.Order.Status</span></div>
+            <ul class="detail-list">
+                <li><span class="k">Customer</span><span class="v">@Model.Order.Customer?.FullName</span></li>
+                <li><span class="k">Contact number</span><span class="v">@Model.Order.Customer?.Phone</span></li>
+                <li><span class="k">Amount due</span><span class="v"><b>$@Model.DueAmount.ToString("N2")</b></span></li>
+                <li><span class="k">Plan</span><span class="v">@Model.Order.ConnectionType - @Model.Order.PlanName</span></li>
+                <li><span class="k">Order date</span><span class="v">@Model.Order.OrderDate.ToString("dd MMM yyyy")</span></li>
+                <li><span class="k">Total amount</span><span class="v">$@Model.Order.TotalAmount.ToString("N0")</span></li>
+                <li><span class="k">Payment status</span><span class="v"><span class="badge b-@((Model.Order.PaymentStatus ?? "").ToLower())">@Model.Order.PaymentStatus</span></span></li>
+                <li><span class="k">Connection</span><span class="v">@(Model.Order.Connection != null ? Model.Order.Connection.ConnectionNumber + " (" + Model.Order.Connection.Status + ")" : "Not created yet")</span></li>
+            </ul>
+        </div>
+    }
+}
+
+<div class="nx-kpis">
+    @foreach (var sc in Model.Summary)
+    {
+        <div class="nx-kpi">
+            <div class="nx-kpi-top"><span class="nx-kpi-label">@sc.Status</span><span class="badge b-@((sc.Status ?? "").ToLower())">@sc.Status</span></div>
+            <div class="nx-kpi-value">@sc.Count</div>
+        </div>
+    }
+    @if (!Model.Summary.Any())
+    {
+        <div class="card empty" style="grid-column:1/-1">Nothing to summarise yet.</div>
+    }
+</div>
+<script src="~/js/search.js" asp-append-version="true"></script>

@@ -1,0 +1,50 @@
+@model RetailOrderStartViewModel
+@{
+    ViewData["Title"] = "New Order";
+    ViewData["Active"] = "Customers";
+}
+
+<div class="page-head">
+    <div>
+        <h1>New Order - Step 1 of 2</h1>
+        <p>Customer: <b>@Model.Customer?.FullName</b> (@Model.Customer?.Phone). Choose the connection type and installation address.</p>
+    </div>
+    <a asp-action="Customers" class="btn btn-outline">Back to customers</a>
+</div>
+
+<div class="card">
+<form asp-action="NewOrder" method="post" class="form-grid" novalidate>
+    <input type="hidden" asp-for="CustomerId" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <div class="form-group form-full">
+        <label asp-for="ConnectionType">Connection Type <span class="req">*</span></label>
+        <select asp-for="ConnectionType" class="form-control">
+            @foreach (var t in PlanCatalog.Types)
+            {
+                <option value="@t">@t - @PlanCatalog.Descriptions[t]</option>
+            }
+        </select>
+        <span asp-validation-for="ConnectionType" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InstallAddress">Installation Address <span class="req">*</span></label>
+        <input asp-for="InstallAddress" type="text" class="form-control" />
+        <span asp-validation-for="InstallAddress" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City">City <span class="req">*</span></label>
+        <input asp-for="City" type="text" class="form-control" list="cityList" />
+        <datalist id="cityList">
+            @foreach (var c in PlanCatalog.Cities)
+            {
+                <option value="@c"></option>
+            }
+        </datalist>
+        <span asp-validation-for="City" class="field-error"></span>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Next: choose plan</button>
+        <a asp-action="Customers" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>

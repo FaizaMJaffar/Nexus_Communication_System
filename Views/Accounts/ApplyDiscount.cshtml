@@ -1,0 +1,38 @@
+
+
+@{
+    ViewData["Title"] = "Apply Discount";
+    var discounts = ViewBag.Discounts as List<Discount>;
+}
+
+<div class="page-head">
+    <div>
+        <h1>Apply Discount</h1>
+        <p>Apply a discount slab to a bill.</p>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form asp-action="ApplyDiscount" method="post">
+    <div class="mb-3">
+        <label>Bill Id</label>
+        <input type="number" name="billId" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Discount</label>
+        <select name="discountId" class="form-control">
+            @if (discounts != null)
+            {
+                foreach (var d in discounts)
+                {
+                    <option value="@d.DiscountId">@d.Name (@d.Type - @d.Value)</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Discount</button>
+</form>

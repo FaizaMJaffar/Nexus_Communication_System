@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Add Payment";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Add Payment</h1>
+        <p>Record a payment against an existing bill.</p>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form asp-action="AddPayment" method="post">
+    <div class="mb-3">
+        <label>Bill Id</label>
+        <input type="number" name="billId" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Amount Paid</label>
+        <input type="number" step="0.01" name="amountPaid" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Payment Method</label>
+        <select name="paymentMethod" class="form-control">
+            <option>Cash</option>
+            <option>Card</option>
+            <option>Bank Transfer</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Reference No</label>
+        <input type="text" name="referenceNo" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Payment</button>
+</form>

@@ -1,0 +1,60 @@
+@model ApplyConnectionViewModel
+@{
+    ViewData["Title"] = "Apply Connection";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Apply for a New Connection</h1>
+        <p>Step 1 of 2 - Choose your connection type and installation address</p>
+    </div>
+</div>
+
+<form asp-action="ApplyConnection" method="post" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="card mb">
+        <h3>1. Connection Type</h3>
+        <div class="grid grid-3">
+            @foreach (var t in PlanCatalog.Types)
+            {
+                <label class="choice">
+                    <input type="radio" name="ConnectionType" value="@t" @(Model.ConnectionType == t ? "checked" : "") />
+                    <div class="choice-box">
+                        <div class="choice-icon">@PlanCatalog.Icons[t]</div>
+                        <div class="choice-title">@t</div>
+                        <div class="choice-desc">@PlanCatalog.Descriptions[t]</div>
+                    </div>
+                </label>
+            }
+        </div>
+        <span asp-validation-for="ConnectionType" class="field-error"></span>
+    </div>
+
+    <div class="card mb">
+        <h3>2. Installation Address</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" type="text" list="cityList" placeholder="Enter city" />
+                <datalist id="cityList">
+                    @foreach (var c in PlanCatalog.Cities)
+                    {
+                        <option value="@c"></option>
+                    }
+                </datalist>
+                <span asp-validation-for="City" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstallAddress"></label>
+                <input asp-for="InstallAddress" type="text" placeholder="Where should we install the connection?" />
+                <span asp-validation-for="InstallAddress" class="field-error"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button type="submit" class="btn">Next: Select Plan →</button>
+        <a class="btn btn-outline" asp-action="Dashboard">Cancel</a>
+    </div>
+</form>

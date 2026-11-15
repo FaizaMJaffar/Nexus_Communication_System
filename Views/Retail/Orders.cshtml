@@ -1,0 +1,69 @@
+@model List<Order>
+@{
+    ViewData["Title"] = "Orders";
+    ViewData["Active"] = "Orders";
+    string current = ViewBag.Status as string ?? "All";
+    string Badge(string s) => s switch
+    {
+        "Completed" or "Feasible" or "Paid" => "badge-green",
+        "Rejected" => "badge-red",
+        "Processing" or "Pending" or "Unpaid" => "badge-blue",
+        _ => "badge-purple"
+    };
+}
+
+<div class="page-head">
+    <div>
+        <h1>Orders</h1>
+        <p>Orders placed by your outlet. Search by Order ID, Account ID or customer name.</p>
+    </div>
+    <a asp-action="Customers" class="btn btn-primary"><span class="material-symbols-outlined">add_shopping_cart</span> Place new order</a>
+</div>
+
+<div class="card">
+    <div class="toolbar">
+        <form asp-action="Orders" method="get" class="search-form">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control" placeholder="Order ID, Account ID or customer..." />
+            <select name="status" class="form-control">
+                @foreach (var st in new[] { "All", "Processing", "Completed", "Rejected" })
+                {
+                    <option value="@st" selected="@(current == st)">@st</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Q as string) || current != "All")
+            {
+                <a asp-action="Orders" class="btn btn-outline">Clear</a>
+            }
+        </form>
+        <span class="count-chip">@Model.Count record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>City</th><th>Feasibility</th><th>Order status</th><th>Account ID</th><th>Payment</th><th>Date</th><th class="th-actions">Actions</th></tr></thead>
+            <tbody>
+            @foreach (var o in Model)
+            {
+                var feas = o.Feasibilities?.OrderByDescending(f => f.FeasibilityId).FirstOrDefault()?.Status ?? "Pending";
+                <tr>
+                    <td>@o.OrderNumber</td>
+                    <td>@(o.Customer?.FullName ?? "-")</td>
+                    <td>@o.ConnectionType</td>
+                    <td>@o.PlanName</td>
+                    <td>@o.City</td>
+                    <td><span class="badge @Badge(feas)">@feas</span></td>
+                    <td><span class="badge @Badge(o.Status)">@o.Status</span></td>
+                    <td>@(o.Connection?.ConnectionNumber ?? "-")</td>
+                    <td><span class="badge @Badge(o.PaymentStatus)">@o.PaymentStatus</span></td>
+                    <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                    <td class="actions"><a asp-action="OrderDetails" asp-route-id="@o.Id" class="btn btn-sm btn-outline">View</a></td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="11" class="empty">No order found.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

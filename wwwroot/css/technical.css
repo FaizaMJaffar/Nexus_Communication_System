@@ -1,0 +1,696 @@
+/* ---------- 1. Colors aur sizes ---------- */
+:root {
+    --tx-navy: #0B192C;
+    --tx-navy-soft: #1E293B;
+    --tx-blue: #0066FF;
+    --tx-blue-bright: #0052CC;
+    --tx-bg: #F8FAFC;
+    --tx-surface: #ffffff;
+    --tx-surface-low: #F1F5F9;
+    --tx-surface-mid: #E2E8F0;
+    --tx-surface-high: #DBE8FF;
+    --tx-text: #0F172A;
+    --tx-muted: #64748B;
+    --tx-border: #E2E8F0;
+    --tx-on-navy: #94A3B8;
+    --tx-green: #10b981;
+    --tx-green-bg: #ECFDF5;
+    --tx-green-text: #065f46;
+    --tx-yellow-bg: #FFFBEB;
+    --tx-yellow-text: #92400e;
+    --tx-red: #EF4444;
+    --tx-red-bg: #FEF2F2;
+    --tx-red-text: #991B1B;
+    --tx-purple-bg: #F5F3FF;
+    --tx-purple-text: #5b21b6;
+    --tx-topbar-h: 48px;
+    --tx-sidebar-w: 240px;
+}
+
+/* ---------- 2. Base ---------- */
+* {
+    box-sizing: border-box;
+}
+
+.tx-body {
+    margin: 0;
+    font-family: 'Inter', system-ui, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: var(--tx-text);
+    background: var(--tx-bg);
+}
+
+    .tx-body a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+.material-symbols-outlined {
+    font-size: 18px;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.tx-muted {
+    color: var(--tx-muted);
+}
+
+/* ---------- 3. Top bar ---------- */
+.tx-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--tx-topbar-h);
+    background: var(--tx-navy);
+    color: #dae1ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 50;
+}
+
+.tx-topbar-left,
+.tx-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.tx-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff !important;
+}
+
+    .tx-brand .material-symbols-outlined {
+        color: #4C8DFF;
+    }
+
+.tx-search {
+    position: relative;
+    width: 300px;
+}
+
+    .tx-search .material-symbols-outlined {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--tx-on-navy);
+    }
+
+    .tx-search input {
+        width: 100%;
+        height: 28px;
+        padding: 0 10px 0 34px;
+        background: var(--tx-navy-soft);
+        color: #fff;
+        border: 1px solid #75777d;
+        border-radius: 8px;
+        font-size: 12px;
+        outline: none;
+    }
+
+        .tx-search input:focus {
+            border-color: var(--tx-blue-bright);
+        }
+
+.tx-queue-pill {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(216, 227, 251, 0.12);
+    border: 1px solid rgba(117, 119, 125, 0.3);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+    .tx-queue-pill b {
+        color: #fff;
+        text-transform: none;
+    }
+
+.tx-env-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--tx-navy-soft);
+    border: 1px solid rgba(117, 119, 125, 0.4);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tx-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tx-user-meta {
+    text-align: right;
+    line-height: 1.2;
+}
+
+.tx-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.tx-user-role {
+    font-size: 11px;
+    color: var(--tx-on-navy);
+}
+
+.tx-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--tx-blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- 4. Sidebar ---------- */
+.tx-sidebar {
+    position: fixed;
+    top: var(--tx-topbar-h);
+    left: 0;
+    bottom: 0;
+    width: var(--tx-sidebar-w);
+    background: var(--tx-surface);
+    border-right: 1px solid var(--tx-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 4px;
+    overflow-y: auto;
+    z-index: 40;
+}
+
+.tx-side-title {
+    padding: 4px 8px 8px;
+}
+
+    .tx-side-title strong {
+        display: block;
+        font-size: 14px;
+    }
+
+    .tx-side-title span {
+        font-size: 11px;
+        color: var(--tx-muted);
+    }
+
+.tx-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+    .tx-nav a,
+    .tx-side-bottom a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 0 4px 4px 0;
+        border-left: 2px solid transparent;
+        color: var(--tx-muted) !important;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+        .tx-nav a:hover,
+        .tx-side-bottom a:hover {
+            background: var(--tx-surface-low);
+            color: var(--tx-text) !important;
+        }
+
+        .tx-nav a.active {
+            background: var(--tx-surface-high);
+            color: var(--tx-blue) !important;
+            font-weight: 600;
+            border-left-color: var(--tx-blue);
+            border-radius: 0 4px 4px 0;
+        }
+
+.tx-side-bottom {
+    border-top: 1px solid var(--tx-border);
+    padding-top: 8px;
+}
+
+/* ---------- 5. Main content ---------- */
+.tx-main {
+    margin-left: var(--tx-sidebar-w);
+    padding: calc(var(--tx-topbar-h) + 16px) 24px 32px 16px;
+    min-height: 100vh;
+}
+
+.tx-page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.tx-breadcrumb {
+    font-size: 12px;
+    color: var(--tx-muted);
+}
+
+    .tx-breadcrumb .current {
+        color: var(--tx-text);
+        font-weight: 600;
+    }
+
+.tx-page-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--tx-navy);
+}
+
+.tx-head-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ---------- 6. Buttons ---------- */
+.tx-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.tx-btn-primary {
+    background: var(--tx-blue);
+    color: #fff !important;
+}
+
+    .tx-btn-primary:hover {
+        background: var(--tx-blue-bright);
+    }
+
+.tx-btn-secondary {
+    background: var(--tx-surface-low);
+    color: var(--tx-text) !important;
+    border-color: var(--tx-border);
+}
+
+.tx-btn-danger {
+    background: #fff;
+    color: var(--tx-red) !important;
+    border-color: var(--tx-border);
+}
+
+    .tx-btn-danger:hover {
+        background: var(--tx-red-bg);
+    }
+
+.tx-btn-block {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ---------- 7. Stat cards (Dashboard) ---------- */
+.tx-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.tx-stat {
+    background: var(--tx-surface);
+    border: 1px solid var(--tx-border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.tx-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tx-muted);
+}
+
+.tx-stat-value {
+    margin: 8px 0 4px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+    .tx-stat-value small {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--tx-muted);
+    }
+
+.tx-stat-note {
+    font-size: 12px;
+    color: var(--tx-muted);
+}
+
+.tx-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.tx-stat-ico {
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
+    background: #EFF6FF;
+    color: var(--tx-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+    .tx-stat-ico .material-symbols-outlined { font-size: 16px; }
+    .tx-stat-ico.green { background: var(--tx-green-bg); color: var(--tx-green); }
+    .tx-stat-ico.amber { background: var(--tx-yellow-bg); color: #F59E0B; }
+    .tx-stat-ico.red { background: var(--tx-red-bg); color: var(--tx-red); }
+.tx-stat-note {
+    padding-top: 8px;
+    border-top: 1px solid #EDF2F7;
+}
+/* ---------- 8. Card ---------- */
+.tx-card {
+    background: var(--tx-surface);
+    border: 1px solid var(--tx-border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.tx-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--tx-surface-low);
+    border-bottom: 1px solid var(--tx-border);
+}
+
+.tx-card-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tx-card-body {
+    padding: 12px;
+}
+
+.tx-card-foot {
+    padding: 8px 12px;
+    background: var(--tx-surface-low);
+    border-top: 1px solid var(--tx-border);
+    font-size: 12px;
+    color: var(--tx-muted);
+}
+
+.tx-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.tx-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* ---------- 9. Filter tabs ---------- */
+.tx-tabs {
+    display: inline-flex;
+    border: 1px solid var(--tx-border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+}
+
+    .tx-tabs a {
+        padding: 3px 10px;
+        font-size: 12px;
+        color: var(--tx-muted) !important;
+        border-right: 1px solid var(--tx-border);
+    }
+
+        .tx-tabs a:last-child {
+            border-right: 0;
+        }
+
+        .tx-tabs a.active {
+            background: var(--tx-surface-high);
+            color: var(--tx-blue) !important;
+            font-weight: 600;
+        }
+
+/* ---------- 10. Table ---------- */
+.tx-table-wrap {
+    overflow-x: auto;
+}
+
+.tx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+    .tx-table th {
+        text-align: left;
+        padding: 10px 12px;
+        background: var(--tx-surface-low);
+        border-bottom: 2px solid #CBD5E1;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #475569;
+        white-space: nowrap;
+    }
+
+    .tx-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--tx-surface-mid);
+        vertical-align: middle;
+    }
+
+    .tx-table tbody tr:hover {
+        background: var(--tx-surface-low);
+    }
+
+.tx-wo {
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tx-blue);
+}
+
+/* ---------- 11. Status badges ---------- */
+.tx-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 20px;
+    padding: 0 7px;
+    border-radius: 4px;
+    border: 1px solid #CBD5E1;
+    background: var(--tx-surface-low);
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+    .tx-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: .85;
+    }
+.tx-badge-feasible,
+.tx-badge-completed,
+.tx-badge-active,
+.tx-badge-available {
+    background: var(--tx-green-bg);
+    color: var(--tx-green-text);
+    border-color: #A7F3D0;
+}
+.tx-badge-temporarily-inactive,
+.tx-badge-pending {
+    background: var(--tx-yellow-bg);
+    color: var(--tx-yellow-text);
+    border-color: #FDE68A;
+}
+.tx-badge-permanently-inactive,
+.tx-badge-rejected {
+    background: var(--tx-red-bg);
+    color: var(--tx-red-text);
+    border-color: #FECACA;
+}
+.tx-badge-processing,
+.tx-badge-planning,
+.tx-badge-assigned {
+    background: var(--tx-purple-bg);
+    color: var(--tx-purple-text);
+    border-color: #DDD6FE;
+}
+.tx-badge-inactive {
+    background: #F1F5F9;
+    color: #475569;
+    border-color: #CBD5E1;
+}
+/* ---------- 12. Forms ---------- */
+.tx-form-group {
+    margin-bottom: 12px;
+}
+
+.tx-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--tx-muted);
+}
+
+.tx-input,
+.tx-select,
+.tx-textarea {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--tx-text);
+    background: #fff;
+    border: 1px solid #CBD5E1;
+    border-radius: 4px;
+    outline: none;
+}
+
+.tx-textarea {
+    height: auto;
+    min-height: 80px;
+    padding: 8px 12px;
+}
+
+    .tx-input:focus,
+    .tx-select:focus,
+    .tx-textarea:focus {
+        border-color: var(--tx-blue);
+    }
+
+.tx-form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.field-validation-error,
+.text-danger {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--tx-red);
+}
+
+/* ---------- 13. Alerts ---------- */
+.tx-alert {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-size: 13px;
+}
+
+.tx-alert-success {
+    background: var(--tx-green-bg);
+    color: var(--tx-green-text);
+    border-color: #A7F3D0;
+}
+
+.tx-alert-error {
+    background: var(--tx-red-bg);
+    color: var(--tx-red-text);
+    border-color: #FECACA;
+}
+
+/* ---------- 14. Login page ---------- */
+.tx-login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tx-navy);
+    padding: 16px;
+}
+
+.tx-login-card {
+    width: 100%;
+    max-width: 380px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+}
+
+/* ---------- 15. Chhoti screen ---------- */
+@media (max-width: 1100px) {
+    .tx-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tx-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .tx-sidebar {
+        display: none;
+    }
+
+    .tx-main {
+        margin-left: 0;
+    }
+
+    .tx-search,
+    .tx-env-badge,
+    .tx-user-meta {
+        display: none;
+    }
+
+    .tx-stats,
+    .tx-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}

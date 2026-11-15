@@ -1,0 +1,96 @@
+@model Employee
+@{
+    ViewData["Title"] = "Add Employee";
+    ViewData["Active"] = "Employees";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Add Employee</h1>
+        <p>Fill in the details below and save.</p>
+    </div>
+    <a asp-action="Employees" class="btn btn-outline">Back to list</a>
+</div>
+
+<div class="card">
+<form asp-action="AddEmployee" method="post" class="form-grid">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger form-full"></div>
+    <div class="form-group">
+        <label asp-for="FullName">Full Name <span class="req">*</span></label>
+        <input asp-for="FullName" type="text" class="form-control" required />
+        <span asp-validation-for="FullName" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email <span class="req">*</span></label>
+        <input asp-for="Email" type="email" class="form-control" required />
+        <span asp-validation-for="Email" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" type="tel" class="form-control" />
+        <span asp-validation-for="Phone" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Designation">Designation <span class="req">*</span></label>
+        <input asp-for="Designation" type="text" class="form-control" required />
+        <span asp-validation-for="Designation" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Salary">Salary <span class="req">*</span></label>
+        <input asp-for="Salary" type="number" class="form-control" step="0.01" min="0" required />
+        <span asp-validation-for="Salary" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="JoinDate">Join Date <span class="req">*</span></label>
+        <input asp-for="JoinDate" type="date" class="form-control" required />
+        <span asp-validation-for="JoinDate" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Role">Role (Portal) <span class="req">*</span></label>
+        <select asp-for="Role" class="form-control" id="roleSelect">
+            @foreach (var r in StaffRoles.All)
+            {
+                <option value="@r">@r</option>
+            }
+        </select>
+        <span asp-validation-for="Role" class="field-error"></span>
+    </div>
+    <div class="form-group" id="shopGroup">
+        <label asp-for="RetailShopId">Retail Shop <span class="muted">(Retail role only)</span></label>
+        <select asp-for="RetailShopId" asp-items="(SelectList)ViewBag.Shops" class="form-control">
+            <option value="">-- select shop --</option>
+        </select>
+        <span asp-validation-for="RetailShopId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserId">User ID <span class="req">*</span></label>
+        <input asp-for="UserId" type="text" class="form-control" autocomplete="off" required />
+        <span asp-validation-for="UserId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Password <span class="req">*</span></label>
+        <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" required />
+        <span asp-validation-for="Password" class="field-error"></span>
+    </div>
+    <div class="form-group form-full">
+        <label class="check-row"><input asp-for="IsActive" type="checkbox" /> Active</label>
+    </div>
+    <div class="form-actions form-full">
+        <button type="submit" class="btn btn-primary">Save employee</button>
+        <a asp-action="Employees" class="btn btn-outline">Cancel</a>
+    </div>
+</form>
+</div>
+
+@section Scripts {
+    <script>
+        // the shop box is only needed for the Retail role
+        (function () {
+            var role = document.getElementById('roleSelect');
+            var group = document.getElementById('shopGroup');
+            function sync() { group.style.display = role.value === 'Retail' ? '' : 'none'; }
+            role.addEventListener('change', sync);
+            sync();
+        })();
+    </script>
+}

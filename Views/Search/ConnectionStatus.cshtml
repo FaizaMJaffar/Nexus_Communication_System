@@ -1,0 +1,65 @@
+@model NexusCommunicationSystem.Models.ConnectionStatusViewModel
+@{
+    ViewData["Title"] = "Connection Status";
+    ViewData["Active"] = "Reports";
+    ViewData["Tab"] = "ConnectionStatus";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Connection Status</h1>
+        <p>Look up one connection and see how all connections are spread across statuses.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="ConnectionStatus" class="nx-filter" data-search>
+        <div class="form-group" style="grid-column: span 2"><label for="connectionNumber">Account ID</label><input type="text" id="connectionNumber" name="connectionNumber" value="@Model.ConnectionNumber" placeholder="Enter the connection number" autofocus /></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Check</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    @if (Model.Connection == null)
+    {
+        <div class="card empty mb">No connection found with that number.</div>
+    }
+    else
+    {
+        <div class="card mb">
+            <div class="card-head"><h3>Connection <span class="mono">@Model.Connection.ConnectionNumber</span></h3><span class="badge b-@((Model.Connection.Status ?? "").ToLower())">@Model.Connection.Status</span></div>
+            <ul class="detail-list">
+                <li><span class="k">Customer</span><span class="v">@Model.Connection.Customer?.FullName</span></li>
+                <li><span class="k">Contact number</span><span class="v">@Model.Connection.Customer?.Phone</span></li>
+                <li><span class="k">Amount due</span><span class="v"><b>$@Model.DueAmount.ToString("N2")</b></span></li>
+                <li><span class="k">Type</span><span class="v">@Model.Connection.ConnectionType</span></li>
+                <li><span class="k">Plan</span><span class="v">@Model.Connection.PlanName @Model.Connection.Speed</span></li>
+                <li><span class="k">Monthly charges</span><span class="v">$@Model.Connection.MonthlyCharges.ToString("N0")</span></li>
+                <li><span class="k">Install address</span><span class="v">@Model.Connection.InstallAddress, @Model.Connection.City</span></li>
+                <li><span class="k">Activated</span><span class="v">@(Model.Connection.ActivatedAt.HasValue ? Model.Connection.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</span></li>
+                <li><span class="k">Deactivated</span><span class="v">@(Model.Connection.DeactivatedAt.HasValue ? Model.Connection.DeactivatedAt.Value.ToString("dd MMM yyyy") : "-")</span></li>
+            </ul>
+        </div>
+    }
+}
+
+<div class="nx-kpis">
+    @foreach (var sc in Model.Summary)
+    {
+        <div class="nx-kpi">
+            <div class="nx-kpi-top"><span class="nx-kpi-label">@sc.Status</span><span class="badge b-@((sc.Status ?? "").ToLower())">@sc.Status</span></div>
+            <div class="nx-kpi-value">@sc.Count</div>
+        </div>
+    }
+    @if (!Model.Summary.Any())
+    {
+        <div class="card empty" style="grid-column:1/-1">Nothing to summarise yet.</div>
+    }
+</div>
+<script src="~/js/search.js" asp-append-version="true"></script>

@@ -1,0 +1,42 @@
+@model List<Order>
+@{
+    ViewData["Title"] = "Order Invoices";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Order Invoices</h1>
+        <p>First invoices of new orders (plan charges + refundable security deposit + service tax) that are still unpaid.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table class="table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Placed</th><th>Due date</th><th>Total</th><th>Status</th><th class="th-actions">Action</th></tr></thead>
+            <tbody>
+            @foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.OrderNumber</td>
+                    <td>@(o.Customer?.FullName ?? "-")</td>
+                    <td>@o.ConnectionType - @o.PlanName</td>
+                    <td>@o.OrderDate.ToString("dd MMM yyyy")</td>
+                    <td>@o.DueDate.ToString("dd MMM yyyy")</td>
+                    <td>$@o.TotalAmount.ToString("N2")</td>
+                    <td><span class="badge badge-blue">@o.Status</span></td>
+                    <td class="actions">
+                        <form asp-action="ReceiveOrderPayment" asp-route-id="@o.Id" method="post" class="inline">
+                            <button type="submit" class="btn btn-sm btn-primary">Mark paid</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="empty">No unpaid order invoice.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

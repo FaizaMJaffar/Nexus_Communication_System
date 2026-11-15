@@ -1,0 +1,70 @@
+@model NexusCommunicationSystem.Models.ConnectionSearchViewModel
+@{
+    ViewData["Title"] = "Search Connection";
+    ViewData["Active"] = "Search";
+    ViewData["Tab"] = "SearchConnection";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Search Connection</h1>
+        <p>Find connections by number, customer, type or status.</p>
+    </div>
+</div>
+
+<partial name="_SearchNav" />
+
+<div class="card mb">
+    <form method="get" asp-action="SearchConnection" class="nx-filter" data-search data-clean="true">
+        <div class="form-group"><label for="ConnectionNumber">Account ID</label><input type="text" id="ConnectionNumber" name="ConnectionNumber" value="@Model.ConnectionNumber" /></div>
+        <div class="form-group"><label for="CustomerName">Customer name</label><input type="text" id="CustomerName" name="CustomerName" value="@Model.CustomerName" /></div>
+        <div class="form-group"><label for="ConnectionType">Connection type</label>
+            <select id="ConnectionType" name="ConnectionType">
+                <option value="">All</option>
+                @foreach (var t in PlanCatalog.Types) { <option value="@t" selected="@(Model.ConnectionType == t)">@t</option> }
+            </select></div>
+        <div class="form-group"><label for="Status">Status</label>
+            <select id="Status" name="Status">
+                <option value="">All</option>
+                @foreach (var s in new[] { "Pending", "Active", "Temporarily Inactive", "Permanently Inactive" }) { <option value="@s" selected="@(Model.Status == s)">@s</option> }
+            </select></div>
+        <div class="form-group nx-filter-actions">
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span> Search</button>
+            <a href="#" data-action="clear-search" class="btn btn-outline">Reset</a>
+        </div>
+    </form>
+</div>
+
+@if (Model.Searched)
+{
+    @if (Model.Results.Any())
+    {
+<div class="card nx-card-flush mb">
+    <div class="card-head"><h3>Connections</h3><span class="count-chip">@Model.Results.Count record(s)</span></div>
+<div class="table-wrap">
+    <table class="table">
+        <thead><tr><th>Account ID</th><th>Customer</th><th>Type</th><th>Plan</th><th>Activated</th><th>Status</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Results)
+        {
+            <tr>
+                <td><a asp-action="ConnectionStatus" asp-route-connectionNumber="@c.ConnectionNumber" class="mono">@c.ConnectionNumber</a></td>
+                <td>@c.Customer?.FullName</td>
+                <td>@c.ConnectionType</td>
+                <td>@c.PlanName</td>
+                <td>@(c.ActivatedAt.HasValue ? c.ActivatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
+                <td><span class="badge b-@((c.Status ?? "").ToLower())">@c.Status</span></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+    }
+    else
+    {
+        <div class="card empty">No connections match these filters.</div>
+    }
+}
+
+<script src="~/js/search.js" asp-append-version="true"></script>

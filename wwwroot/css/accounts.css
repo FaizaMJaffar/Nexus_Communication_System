@@ -1,0 +1,9 @@
+/* Accounts portal - only what differs from nexus-base.css */
+.portal-accounts .nx-content > h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+.portal-accounts .nx-content > .text-muted { margin: -6px 0 14px; }
+.portal-accounts .nx-content > input.form-control { max-width: 320px; margin-bottom: 12px; }   /* per-table search box added by accounts.js */
+.portal-accounts .nx-content > form .btn { margin-top: 4px; }
+.portal-accounts .table-bordered { width: 100%; }
+.portal-accounts .nx-content > table { max-width: none; }
+.portal-accounts .nx-content > table td, .portal-accounts .nx-content > table th { white-space: nowrap; }
+.portal-accounts .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 16px; }
